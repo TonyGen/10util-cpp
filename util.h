@@ -45,6 +45,17 @@ template <class A, class B> std::vector<B> fmap (B (*fun) (A), std::vector<A> li
 	return fmap (f, list);
 }
 
+template <class A> std::vector<A> filter (boost::function1<bool,A> pred, std::vector<A> list) {
+	std::vector<A> newList;
+	for (unsigned i = 0; i < list.size(); i++)
+		if (pred (list[i])) newList.push_back (list[i]);
+	return newList;
+}
+template <class A> std::vector<A> filter (bool (*pred) (A), std::vector<A> list) {
+	boost::function1<bool,A> f = pred;
+	return filter (f, list);
+}
+
 /** Recycle items until N listed */
 template <class A> std::vector<A> cycle (unsigned n, std::vector<A> items) {
 	unsigned c = items.size();
