@@ -23,6 +23,11 @@ inline std::vector <std::string> argsVector (int argc, char* argv[]) {
 	return args;
 }
 
+template <class A> void push_all (std::vector<A>& list, const std::vector<A>& elems) {
+	for (unsigned i = 0; i < elems.size(); i++)
+		list.push_back (elems[i]);
+}
+
 template <class A, class B> B foldl (boost::function2<B,B,A> fun, B init, std::vector<A> list) {
 	B val = init;
 	for (unsigned i = 0; i < list.size(); i++)
