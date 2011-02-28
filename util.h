@@ -9,9 +9,11 @@
 #include <vector>
 #include <map>
 
-/** Unit type is like void but its single value can be passed between functions, useful or generic functions */
-class Unit {};
-Unit unit;
+/** Unit type is like void but its single value can be passed between functions; useful for generic functions */
+struct Unit {
+	friend std::ostream& operator<< (std::ostream& out, const Unit& x) {out << "unit"; return out;}
+};
+extern Unit unit;
 
 template <class T> inline std::string to_string (const T& t) {
 	std::stringstream ss;
