@@ -15,12 +15,6 @@ struct Unit {
 };
 extern Unit unit;
 
-template <class T> inline std::string to_string (const T& t) {
-	std::stringstream ss;
-	ss << t;
-	return ss.str();
-}
-
 inline std::vector <std::string> argsVector (int argc, char* argv[]) {
 	std::vector <std::string> args;
 	for (int i = 0; i < argc; i++) {
@@ -147,6 +141,19 @@ template <class K, class V> std::ostream& operator<< (std::ostream& out, const s
 	}
 	out << "}";
 	return out;
+}
+
+template <class T> std::string to_string (const T& t) {
+	std::stringstream ss;
+	ss << t;
+	return ss.str();
+}
+
+template <class T> T parse_string (std::string str) {
+	std::istringstream ss;
+	T a;
+	ss >> a;
+	return a;
 }
 
 #endif /* UTIL_H_ */
