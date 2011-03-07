@@ -1,4 +1,4 @@
-libname = 'util'
+libname = '10util'
 
 lib = Library (libname, Glob('*.cpp'), CPPPATH = ['.', '/opt/local/include'])
 

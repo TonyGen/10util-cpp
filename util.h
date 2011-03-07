@@ -150,7 +150,7 @@ template <class T> std::string to_string (const T& t) {
 }
 
 template <class T> T parse_string (std::string str) {
-	std::istringstream ss;
+	std::istringstream ss (str);
 	T a;
 	ss >> a;
 	return a;

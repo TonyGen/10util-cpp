@@ -8,12 +8,13 @@
 
 using boost::asio::ip::tcp;
 
+static boost::asio::io_service IO;
+
 /** Connect to server listening on given hostname and port */
 network::Socket network::connect (std::string hostname, unsigned short port) {
-	boost::asio::io_service io;
-	tcp::resolver resolver (io);
+	tcp::resolver resolver (IO);
 	tcp::resolver::query query (tcp::v4(), hostname, to_string (port));
-	Socket sock (new tcp::socket (io));
+	Socket sock (new tcp::socket (IO));
 	sock->connect (* resolver.resolve (query));
 	return sock;
 }
@@ -54,10 +55,9 @@ network::Message network::receive (Socket sock) {
 
 /** Listen for client connections and fork a thread for each one running server function */
 void network::listen (unsigned short port, boost::function1 <void, Socket> server) {
-	boost::asio::io_service io;
-	tcp::acceptor acceptor (io, tcp::endpoint (tcp::v4(), port));
+	tcp::acceptor acceptor (IO, tcp::endpoint (tcp::v4(), port));
 	for (;;) {
-		Socket sock (new tcp::socket (io));
+		Socket sock (new tcp::socket (IO));
 		acceptor.accept (*sock);
 		boost::thread th (boost::bind (server, sock));
 	}
