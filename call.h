@@ -14,10 +14,16 @@ namespace _call {
 
 /** Respond to requests from socket one at a time using supplied respond function */
 template <class Request, class Response> void respondLoop (boost::function1 <Response, Request> respond, message::Socket sock) {
-	for (;;) {
-		Request req = message::receive<Request> (sock);
-		Response res = respond (req);
-		message::send (sock, res);
+	try {
+		for (;;) {
+			Request req = message::receive<Request> (sock);
+			Response res = respond (req);
+			message::send (sock, res);
+		}
+	} catch (std::exception &e) {
+		std::string s = e.what();
+		if (s != "End of file") std::cerr << s << std::endl;
+		// else std::cout << "client closed connection" << std::endl;
 	}
 }
 
@@ -38,11 +44,6 @@ template <class Request, class Response> class Socket {
 public:  // really private. Use `connect` and `call` instead
 	boost::shared_ptr <var::MVar <message::Socket> > xsock;  // exclusive access for thread-safety
 	Socket (message::Socket sock) : xsock (new var::MVar <message::Socket> (sock)) {}
-// Public:
-	bool isOpen () {
-		var::Access <message::Socket> sock (*xsock);
-		return sock->isOpen();
-	}
 };
 
 /** Accept client connections, forking a thread for each one. The thread executes the given respond function on each request and returns it response. The client connection is expected to send Requests and wait for Responses. Undefined (crashes) otherwise. */

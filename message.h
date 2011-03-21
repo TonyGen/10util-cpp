@@ -32,8 +32,6 @@ struct Socket {
 // Really private, but public for functions in this source file only
 	boost::shared_ptr <boost::asio::ip::tcp::socket> sock;
 	Socket (boost::shared_ptr <boost::asio::ip::tcp::socket> sock) : sock(sock) {}
-// Public:
-	bool isOpen () {return sock->is_open();}
 };
 
 /* Server - One thread per client connection running given server function. This function does not return. The server function can `receive` and `send` messages over the supplied socket connected to the client. */
