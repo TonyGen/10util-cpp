@@ -7,3 +7,6 @@ Build library `lib10util.a`
 
 Install library in `/usr/local/lib` and header files in `/usr/local/include/util`
 	sudo scons install
+
+Linking requires libraries:
+	-lboost_system-mt -lboost_thread-mt -lboost_serialization-mt

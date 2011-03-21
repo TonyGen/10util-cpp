@@ -1,4 +1,4 @@
-// Copied from mongo util/concurrency/mvar.h. Added noncopyable, read, and with.
+// Copied from mongo util/concurrency/mvar.h. Added noncopyable, read, and with. Fixed take so it does not construct a default T.
 
 /*    Copyright 2009 10gen Inc.
  *
@@ -19,7 +19,9 @@
 #define MVAR_H_
 
 #include <boost/thread/condition.hpp>
+#include <boost/thread/recursive_mutex.hpp>
 #include <boost/function.hpp>
+#include <boost/optional.hpp>
 
 namespace var {
 
@@ -73,35 +75,33 @@ namespace var {
             }
         }
 
-        // takes val out of the MVar and returns true or returns false if empty
+        // takes val out of the MVar if exists, otherwise return Nothing.
         // never blocks
-        bool tryTake(T& out) {
+        boost::optional<T> tryTake() {
             // intentionally repeat test before and after lock
-            if (_state == EMPTY) return false;
+            if (_state == EMPTY) return boost::optional<T>(); //Nothing
             Mutex::scoped_lock lock(_mutex);
-            if (_state == EMPTY) return false;
+            if (_state == EMPTY) return boost::optional<T>();
 
             _state = EMPTY;
-            out = _value;
-
             // unblock threads waiting to 'put'
             _condition.notify_all();
 
-            return true;
+            return boost::optional<T>(_value);
         }
 
         // takes val out of the MVar
         // will block if the MVar is empty
         T take() {
-            T ret = T();
+            boost::optional<T> oval;
 
             Mutex::scoped_lock lock(_mutex);
-            while (!tryTake(ret)) {
+            while (!(oval = tryTake())) {
                 // unlocks lock while waiting and relocks before returning
                 _condition.wait(lock);
             }
 
-            return ret;
+            return *oval;
         }
 
         // Note: this is fast because there is no locking, but state could

@@ -1,29 +1,27 @@
 /* Echo client and server */
 /* Assumes util library has been built and installed in /usr/local/include and /usr/local/lib.
- * Compile as: g++ echo.cpp -o echo -I/opt/local/include -L/opt/local/lib -lboost_system-mt.
+ * Compile as: g++ echo.cpp -o echo -I/opt/local/include -L/opt/local/lib -lboost_system-mt -lboost_thread-mt -lboost_serialization-mt -l10util
  * Run as: `echo server <port>` and `echo client <hostname> <port> <message>` */
 
 #include <iostream>
-#include <10util/network.h>
+#include <10util/message.h>
 
 void mainClient (std::string serverHost, unsigned short serverPort, std::string message) {
-	network::Socket sock = network::connect (serverHost, serverPort);
-	boost::shared_array<char> data (new char [message.size() + 1]);
-	std::strcpy (data.get(), message.c_str());
-	network::send (sock, network::Message (data, message.size() + 1));
-	network::Message mess = network::receive (sock);
-	std::cout << mess.data.get() << std::endl;
+	message::Socket sock = message::connect (serverHost, serverPort);
+	message::send (sock, message);
+	std::string reply = message::receive <std::string> (sock);
+	std::cout << reply << std::endl;
 }
 
-void serve (network::Socket sock) {
-	network::Message mess = network::receive (sock);
-	std::cout << mess.data.get() << std::endl;
-	network::send (sock, mess);
+void serve (message::Socket sock) {
+	std::string mess = message::receive <std::string> (sock);
+	std::cout << mess << std::endl;
+	message::send (sock, mess);
 }
 
 void mainServer (unsigned short localPort) {
 	std::cout << "listen on " << localPort << std::endl;
-	network::listen (localPort, serve);
+	message::listen (localPort, serve);
 }
 
 static std::string usage = "Try `echo server <port>` or `echo client <hostname> <port> <message>`";
