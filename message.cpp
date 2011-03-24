@@ -7,8 +7,9 @@
 
 using boost::asio::ip::tcp;
 
-boost::array<char,4> _message::intAsBytes (unsigned int n) {
-	boost::array<char,4> bytes;
+/** 4 byte little endian */
+boost::array<unsigned char,4> _message::intAsBytes (unsigned int n) {
+	boost::array<unsigned char,4> bytes;
 	bytes[0] = n & 0xff;
 	bytes[1] = (n >> 8) & 0xff;
 	bytes[2] = (n >> 16) & 0xff;
@@ -16,12 +17,9 @@ boost::array<char,4> _message::intAsBytes (unsigned int n) {
 	return bytes;
 }
 
-unsigned int _message::bytesAsInt (boost::array<char,4> bytes) {
-	int n = bytes[3];
-	n = (n << 8) + bytes[2];
-	n = (n << 8) + bytes[1];
-	n = (n << 8) + bytes[0];
-	return n;
+/** 4 byte little endian */
+unsigned int _message::bytesAsInt (boost::array<unsigned char,4> bytes) {
+	return (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
 }
 
 static boost::asio::io_service IO;

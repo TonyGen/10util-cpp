@@ -18,9 +18,9 @@ namespace _message {
 const unsigned IntAsBytesLength = 4;
 
 /** When sent over the network, each message is prefixed with its length encoded as 4-byte little-endian */
-boost::array<char,4> intAsBytes (unsigned int n);
+boost::array<unsigned char,4> intAsBytes (unsigned int n);
 
-unsigned int bytesAsInt (boost::array<char,4> bytes);
+unsigned int bytesAsInt (boost::array<unsigned char,4> bytes);
 
 }
 
@@ -55,7 +55,7 @@ template <class A> void send (Socket socket, A message) {
 /** Receive message from machine at other end of socket. Not thread safe. Message expected to be of type A (crash otherwise).
  * A must be boost serializable */
 template <class A> A receive (Socket socket) {
-	boost::array<char,_message::IntAsBytesLength> bytes;
+	boost::array<unsigned char,_message::IntAsBytesLength> bytes;
 	boost::asio::read (*socket.sock, boost::asio::buffer (bytes));
 	unsigned int len = _message::bytesAsInt (bytes);
 	char* data = new char[len];

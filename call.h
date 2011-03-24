@@ -47,7 +47,7 @@ public:  // really private. Use `connect` and `call` instead
 	Socket () {}  // empty socket, expected to be assigned to
 };
 
-/** Accept client connections, forking a thread for each one. The thread executes the given respond function on each request and returns it response. The client connection is expected to send Requests and wait for Responses. Undefined (crashes) otherwise. */
+/** Accept client connections, forking a thread for each one. This function does not return. The thread executes the given respond function on each request and returns it response. The client connection is expected to send Requests and wait for Responses. Undefined (crashes) otherwise. */
 template <class Request, class Response> void listen (Port <Request, Response> port, boost::function1 <Response, Request> respond) {
 	message::listen (port.port, boost::bind (_call::respondLoop<Request,Response>, respond, _1));
 }
