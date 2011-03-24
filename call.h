@@ -44,6 +44,7 @@ template <class Request, class Response> class Socket {
 public:  // really private. Use `connect` and `call` instead
 	boost::shared_ptr <var::MVar <message::Socket> > xsock;  // exclusive access for thread-safety
 	Socket (message::Socket sock) : xsock (new var::MVar <message::Socket> (sock)) {}
+	Socket () {}  // empty socket, expected to be assigned to
 };
 
 /** Accept client connections, forking a thread for each one. The thread executes the given respond function on each request and returns it response. The client connection is expected to send Requests and wait for Responses. Undefined (crashes) otherwise. */

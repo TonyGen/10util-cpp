@@ -156,4 +156,7 @@ template <class T> T parse_string (std::string str) {
 	return a;
 }
 
+/** Tokenize string using given char as delimeter */
+std::vector <std::string> split_string (char delimeter, std::string str);
+
 #endif /* UTIL_H_ */
