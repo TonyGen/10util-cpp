@@ -47,13 +47,13 @@ public:  // really private. Use `connect` and `call` instead
 	Socket () {}  // empty socket, expected to be assigned to
 };
 
-/** Accept client connections, forking a thread for each one. This function does not return. The thread executes the given respond function on each request and returns it response. The client connection is expected to send Requests and wait for Responses. Undefined (crashes) otherwise. */
-template <class Request, class Response> void listen (Port <Request, Response> port, boost::function1 <Response, Request> respond) {
-	message::listen (port.port, boost::bind (_call::respondLoop<Request,Response>, respond, _1));
+/** Accept client connections, forking a thread for each one. Returns listener thread, which you may terminate to stop listening. The thread executes the given respond function on each request and returns it response. The client connection is expected to send Requests and wait for Responses. Undefined (crashes) otherwise. */
+template <class Request, class Response> boost::shared_ptr<boost::thread> listen (Port <Request, Response> port, boost::function1 <Response, Request> respond) {
+	return message::listen (port.port, boost::bind (_call::respondLoop<Request,Response>, respond, _1));
 }
-template <class Request, class Response> void listen (Port <Request, Response> port, Response (*respond) (Request)) {
+template <class Request, class Response> boost::shared_ptr<boost::thread> listen (Port <Request, Response> port, Response (*respond) (Request)) {
 	boost::function1 <Response, Request> f = respond;
-	listen (port, f);
+	return listen (port, f);
 }
 
 /** Client - Connect to the designate server. You can then `send` and `receive` messages over this socket */

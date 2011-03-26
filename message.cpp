@@ -25,13 +25,19 @@ unsigned int _message::bytesAsInt (boost::array<unsigned char,4> bytes) {
 static boost::asio::io_service IO;
 
 /** Listen for client connections, forking a thread for each one running given server function. Does not return. */
-void message::listen (unsigned short port, boost::function1 <void, Socket> server) {
+static void acceptLoop (unsigned short port, boost::function1 <void, message::Socket> server) {
 	tcp::acceptor acceptor (IO, tcp::endpoint (tcp::v4(), port));
 	for (;;) {
 		boost::shared_ptr <tcp::socket> sock (new tcp::socket (IO));
 		acceptor.accept (*sock);
-		boost::thread th (boost::bind (server, Socket (sock)));
+		boost::thread th (boost::bind (server, message::Socket (sock)));
 	}
+}
+
+/** Listen for client connections, forking a thread for each one running given server function.
+ * Return listener thread that you may terminate to stop listening. */
+boost::shared_ptr<boost::thread> message::listen (unsigned short port, boost::function1 <void, Socket> server) {
+	return boost::shared_ptr<boost::thread> (new boost::thread (boost::bind (acceptLoop, port, server)));
 }
 
 /** Connect to the server listening on given hostname and port */

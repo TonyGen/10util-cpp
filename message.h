@@ -9,6 +9,7 @@
 #include <boost/array.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/thread.hpp>
 #include "util.h"
 
 /** Private */
@@ -34,8 +35,8 @@ struct Socket {
 	Socket (boost::shared_ptr <boost::asio::ip::tcp::socket> sock) : sock(sock) {}
 };
 
-/* Server - One thread per client connection running given server function. This function does not return. The server function can `receive` and `send` messages over the supplied socket connected to the client. */
-void listen (unsigned short port, boost::function1 <void, Socket> server);
+/* Server - One thread per client connection running given server function. Returns listener thread, which you may terminate to stop listening. The server function can `receive` and `send` messages over the supplied socket connected to the client. */
+boost::shared_ptr<boost::thread> listen (unsigned short port, boost::function1 <void, Socket> server);
 
 /** Client - Connect to the designate server. You can then `send` and `receive` messages over this socket */
 Socket connect (std::string hostname, unsigned short port);

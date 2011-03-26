@@ -21,7 +21,8 @@ void serve (message::Socket sock) {
 
 void mainServer (unsigned short localPort) {
 	std::cout << "listen on " << localPort << std::endl;
-	message::listen (localPort, serve);
+	boost::shared_ptr <boost::thread> t = message::listen (localPort, serve);
+	t->join();  // wait forever
 }
 
 static std::string usage = "Try `echo server <port>` or `echo client <hostname> <port> <message>`";

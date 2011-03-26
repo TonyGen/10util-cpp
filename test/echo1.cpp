@@ -21,7 +21,8 @@ static string respond (string req) {
 
 void mainServer (unsigned short localPort) {
 	cout << "listen on " << localPort << endl;
-	call::listen (call::Port <string, string> (localPort), respond);
+	boost::shared_ptr <boost::thread> t = call::listen (call::Port <string, string> (localPort), respond);
+	t->join();  // wait forever
 }
 
 static string usage = "Try `echo server <port>` or `echo client <hostname> <port> <message>`";
