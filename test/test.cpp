@@ -42,7 +42,18 @@ void test_intBytes () {
 	assert (n == 228);
 }
 
+void test_parseInt () {
+	int n = parse_string<int> ("42");
+	assert (n == 42);
+	try {
+		parse_string<int> ("hello");
+	} catch (std::runtime_error &e) {
+		assert (std::string (e.what()) == "error parsing \"hello\" as type i");
+	}
+}
+
 int main (int argc, const char* argv[]) {
 	test_split();
 	test_intBytes();
+	test_parseInt();
 }

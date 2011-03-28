@@ -94,9 +94,16 @@ template <class A> std::vector<A> repeat (unsigned n, A (*action) ()) {
 	return repeat (n, f);
 }
 
+/** Enumerate numbers from 0 to n-1 */
+template <class A> std::vector<A> enumerate (A n) {
+	std::vector<A> list;
+	for (A i = 0; i < n; i++) list.push_back (i);
+	return list;
+}
+
 /** pair elements from each list together, final list size equals size of smaller list, remaining elements in larger list are ignored */
 template <class A, class B> std::vector< std::pair<A,B> > zip (std::vector<A> as, std::vector<B> bs) {
-	unsigned n = as.size() < bs.size ? as.size() : bs.size();
+	unsigned n = as.size() < bs.size() ? as.size() : bs.size();
 	std::vector< std::pair<A,B> > pairs;
 	for (unsigned i = 0; i < n; i++)
 		pairs.push_back (std::make_pair (as[i], bs[i]));
@@ -152,7 +159,7 @@ template <class T> std::string to_string (const T& t) {
 template <class T> T parse_string (std::string str) {
 	std::istringstream ss (str);
 	T a;
-	ss >> a;
+	if ((ss >> a).fail()) throw std::runtime_error ("error parsing \"" + str + "\" as type " + typeid(a).name());
 	return a;
 }
 
