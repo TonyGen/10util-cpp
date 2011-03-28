@@ -34,3 +34,5 @@ int main (int argc, const char* argv[]) {
 		mainClient (argv[2], parse_string<unsigned short> (argv[3]), argv[4]);
 	else std::cerr << usage << std::endl;
 }
+
+//TODO: test bad connections, eg. connecting to wrong port

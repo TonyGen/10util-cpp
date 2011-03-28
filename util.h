@@ -39,7 +39,7 @@ template <class A, class B> B foldl (B (*fun) (B, A), B init, std::vector<A> lis
 	return foldl (f, init, list);
 }
 
-template <class A, class B> std::vector<B> fmap (boost::function1<B,A> fun, std::vector<A> list) {
+template <class A, class B, template <typename, typename> class F> std::vector<B> fmap (F<B,A> fun, std::vector<A> list) {
 	std::vector<B> newList;
 	for (unsigned i = 0; i < list.size(); i++)
 		newList.push_back (fun (list[i]));
