@@ -12,27 +12,27 @@ void test_split () {
 	assert (tokens.size() == 2);
 	assert (tokens[0] == "hello d");
 	assert (tokens[1] == "world");
-	for (int i = 0; i < tokens.size(); i++)
+	for (unsigned i = 0; i < tokens.size(); i++)
 		cout << tokens[i] << endl;
 
 	tokens = split_string (':', "hello ");
 	assert (tokens.size() == 1);
 	assert (tokens[0] == "hello ");
-	for (int i = 0; i < tokens.size(); i++)
+	for (unsigned i = 0; i < tokens.size(); i++)
 		cout << tokens[i] << endl;
 
 	tokens = split_string (':', ":hello ");
 	assert (tokens.size() == 2);
 	assert (tokens[0] == "");
 	assert (tokens[1] == "hello ");
-	for (int i = 0; i < tokens.size(); i++)
+	for (unsigned i = 0; i < tokens.size(); i++)
 		cout << tokens[i] << endl;
 
 	tokens = split_string (':', "hello :");
 	assert (tokens.size() == 2);
 	assert (tokens[0] == "hello ");
 	assert (tokens[1] == "");
-	for (int i = 0; i < tokens.size(); i++)
+	for (unsigned i = 0; i < tokens.size(); i++)
 		cout << tokens[i] << endl;
 }
 

@@ -53,14 +53,37 @@ template <class A> void send (Socket socket, A message) {
 	boost::asio::write (*socket.sock, boost::asio::buffer (mess.c_str(), mess.length()));
 }
 
+}
+
+namespace _message {
+
+/** If read system call is interrupted (by GDB) then retry */
+template <typename SyncReadStream, typename MutableBufferSequence> void read (SyncReadStream& s, const MutableBufferSequence& buf) {
+	while (true) {
+		try {boost::asio::read (s, buf);}
+		catch (boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::system::system_error> > &e) {
+			if (std::string (e.what()) == "Interrupted system call") {
+				std::cout << "socket read retry after system call interrupted" << std::endl;
+				continue;
+			}
+			throw;
+		}
+		break;
+	}
+}
+
+}
+
+namespace message {
+
 /** Receive message from machine at other end of socket. Not thread safe. Message expected to be of type A (crash otherwise).
  * A must be boost serializable */
 template <class A> A receive (Socket socket) {
 	boost::array<unsigned char,_message::IntAsBytesLength> bytes;
-	boost::asio::read (*socket.sock, boost::asio::buffer (bytes));
+	_message::read (*socket.sock, boost::asio::buffer (bytes));
 	unsigned int len = _message::bytesAsInt (bytes);
 	char* data = new char[len];
-	boost::asio::read (*socket.sock, boost::asio::buffer (data, len));
+	_message::read (*socket.sock, boost::asio::buffer (data, len));
 	std::string s (data, len);
 
 	std::stringstream ss (s);

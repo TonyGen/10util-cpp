@@ -1,6 +1,8 @@
 libname = '10util'
 
-lib = Library (libname, Glob('*.cpp'), CPPPATH = ['.', '/opt/local/include'])
+lib = Library (libname, Glob('*.cpp'),
+	CCFLAGS = ['-g'],
+	CPPPATH = ['.', '/opt/local/include'])
 
 Alias ('install', '/usr/local')
 Install ('/usr/local/lib', lib)
