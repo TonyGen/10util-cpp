@@ -1,7 +1,6 @@
 // Compile as: g++ test.cpp -o test -I/opt/local/include -L/opt/local/lib -lboost_system-mt -lboost_thread-mt -lboost_serialization-mt -l10util
 
 #include <10util/util.h>
-#include <10util/message.h>
 #include <cassert>
 #include <iostream>
 
@@ -36,12 +35,6 @@ void test_split () {
 		cout << tokens[i] << endl;
 }
 
-void test_intBytes () {
-	unsigned int n = _message::bytesAsInt (_message::intAsBytes (228));
-	std::cout << n << std::endl;
-	assert (n == 228);
-}
-
 void test_parseInt () {
 	int n = parse_string<int> ("42");
 	assert (n == 42);
@@ -54,6 +47,5 @@ void test_parseInt () {
 
 int main (int argc, const char* argv[]) {
 	test_split();
-	test_intBytes();
 	test_parseInt();
 }
