@@ -9,6 +9,10 @@
 #include <vector>
 #include <map>
 
+typedef int FD; // File descriptor
+typedef FD FDW; // Write-only file descriptor
+typedef FD FDR; // Read-only file descriptor
+
 /** Unit type is like void but its single value can be passed between functions; useful for generic functions */
 struct Unit {
 	friend std::ostream& operator<< (std::ostream& out, const Unit& x) {out << "unit"; return out;}
