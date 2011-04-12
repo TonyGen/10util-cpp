@@ -23,6 +23,8 @@
 #include <boost/function.hpp>
 #include <boost/optional.hpp>
 
+#define MVAR(T) boost::shared_ptr< var::MVar_< T > >
+
 namespace var {
 
     /* This is based on haskell's MVar synchronization primitive:
@@ -33,17 +35,17 @@ namespace var {
      */
 
     template <typename T>
-    class MVar : boost::noncopyable {
+    class MVar_ : boost::noncopyable {
     public:
         enum State {EMPTY=0, FULL};
 
         // create an empty MVar
-        MVar()
+        MVar_()
             : _state(EMPTY)
         {}
 
         // creates a full MVar
-        MVar(const T& val)
+        MVar_(const T& val)
             : _state(FULL)
             , _value(val)
         {}
@@ -126,7 +128,7 @@ namespace var {
     };
 
     // Execute action with exclusive access to contents of MVar
-    template <class T, class A> A with (MVar<T>& mvar, const boost::function1<A,T&>& action) {
+    template <class T, class A> A with (MVar_<T>& mvar, const boost::function1<A,T&> &action) {
     	T value = mvar.take();
     	try {
     		A result = action (value);
@@ -141,12 +143,12 @@ namespace var {
     /** Same as 'with' above except use RAII scope. Contructor takes from the supplied MVar, destructor puts it back. Taken value is available through operator*. */
     template <class T> class Access {
     public:
-    	Access (MVar<T>& mvar) : mvar(&mvar), value (mvar.take()) {}
+    	Access (MVar_<T>& mvar) : mvar(&mvar), value (mvar.take()) {}
     	~Access () {mvar->put (value);}
     	T& operator* () {return value;}
     	T* operator->() {return &value;}
     private:
-    	MVar<T>* mvar;
+    	MVar_<T>* mvar;
     	T value;
     };
 
