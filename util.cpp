@@ -20,13 +20,3 @@ vector<string> split_string (char delimeter, string str) {
 	tokens.push_back (str.substr (i, str.length() - i));
 	return tokens;
 }
-
-Pipe makePipe () {
-	int pipeFds[2];
-	int ok = pipe (pipeFds);
-	if (ok == -1) throw std::runtime_error ("makePipe failed: " + to_string (errno));
-	Pipe p;
-	p.readEnd = pipeFds[0];
-	p.writeEnd = pipeFds[1];
-	return p;
-}

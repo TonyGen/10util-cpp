@@ -8,19 +8,19 @@
 using namespace std;
 using namespace boost;
 
-static void one (shared_ptr< var::MVar_<int> > v) {
+static void one (MVAR(int) v) {
 	var::Access<int> n (*v);
 	cout << "one " << *n << endl;
 	this_thread::sleep (boost::posix_time::seconds (5));
 }
 
-static void two (shared_ptr< var::MVar_<int> > v) {
+static void two (MVAR(int) v) {
 	int n = v->read();
 	cout << "two " << n << endl;
 }
 
 int main (int argc, const char* argv[]) {
-	var::MVar<int> v (new var::MVar_<int> (1));
+	MVAR(int) v (new var::MVar_<int> (1));
 	thread (boost::bind (one, v));
 	thread (boost::bind (two, v));
 	var::Access<int> n (*v);
