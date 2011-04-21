@@ -6,8 +6,6 @@
 
 using namespace std;
 
-Unit unit;
-
 /** Tokenize string using given char as delimeter */
 vector<string> split_string (char delimeter, string str) {
 	vector<string> tokens;

@@ -9,12 +9,6 @@
 #include <vector>
 #include <map>
 
-/** Unit type is like void but its single value can be passed between functions; useful for generic functions */
-struct Unit {
-	friend std::ostream& operator<< (std::ostream& out, const Unit& x) {out << "unit"; return out;}
-};
-extern Unit unit;
-
 inline std::vector <std::string> argsVector (int argc, char* argv[]) {
 	std::vector <std::string> args;
 	for (int i = 0; i < argc; i++) {
