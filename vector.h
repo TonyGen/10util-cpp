@@ -111,4 +111,34 @@ inline std::string concat (std::vector<std::string> strings) {
 	return ss.str();
 }
 
+template <class A> std::vector<A> items (A a1) {
+	std::vector<A> list;
+	list.push_back (a1);
+	return list;
+}
+
+template <class A> std::vector<A> items (A a1, A a2) {
+	std::vector<A> list;
+	list.push_back (a1);
+	list.push_back (a2);
+	return list;
+}
+
+template <class A> std::vector<A> items (A a1, A a2, A a3) {
+	std::vector<A> list;
+	list.push_back (a1);
+	list.push_back (a2);
+	list.push_back (a3);
+	return list;
+}
+
+template <class A> std::vector<A> items (A a1, A a2, A a3, A a4) {
+	std::vector<A> list;
+	list.push_back (a1);
+	list.push_back (a2);
+	list.push_back (a3);
+	list.push_back (a4);
+	return list;
+}
+
 #endif /* UTIL_VECTOR_H_ */

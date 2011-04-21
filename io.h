@@ -7,6 +7,7 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <sstream>
 
 namespace io {
 
@@ -53,6 +54,21 @@ public:
 	}
 	SourceSink (IOStream inout) : inout(inout) {}
 };
+
+template <class A> A deserialized (std::string s) {
+	std::stringstream ss (s);
+	boost::archive::text_iarchive ar (ss);
+	A a;
+	ar >> a;
+	return a;
+}
+
+template <class A> std::string serialized (A a) {
+	std::stringstream ss;
+	boost::archive::text_oarchive ar (ss);
+	ar << a;
+	return ss.str();
+}
 
 }
 

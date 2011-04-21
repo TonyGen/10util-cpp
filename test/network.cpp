@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void mainClient (network::Host serverHost, network::Port serverPort, string message) {
+void mainClient (network::Hostname serverHost, network::Port serverPort, string message) {
 	io::IOStream conn = network::connect (network::HostPort (serverHost, serverPort));
 	*conn << message << endl;
 	string reply;
