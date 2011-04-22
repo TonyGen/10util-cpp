@@ -45,7 +45,7 @@ static Bar foobar (Foo f) {
 	return Bar (to_string (f), f.z);
 }
 
-void mainClient (network::Host serverHost, network::Port serverPort, float r) {
+void mainClient (network::Hostname serverHost, network::Port serverPort, float r) {
 	io::IOStream conn = network::connect (network::HostPort (serverHost, serverPort));
 	io::SourceSink <Bar, Foo> ss (conn);
 	ss << Foo (r);
