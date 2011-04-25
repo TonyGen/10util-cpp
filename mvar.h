@@ -15,15 +15,13 @@
  *    limitations under the License.
  */
 
-#ifndef MVAR_H_
-#define MVAR_H_
+#pragma once
 
+#include <boost/shared_ptr.hpp>
 #include <boost/thread/condition.hpp>
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/function.hpp>
 #include <boost/optional.hpp>
-
-#define MVAR(T) boost::shared_ptr< var::MVar_< T > >
 
 namespace var {
 
@@ -154,4 +152,12 @@ namespace var {
 
 }
 
-#endif /* MVAR_H_ */
+#define MVAR(T) boost::shared_ptr< var::MVar_< T > >
+
+namespace var {
+
+template <class T> MVAR(T) newMVar (const T &object) {return MVAR(T) (new MVar_<T> (object));}
+
+template <class T> MVAR(T) newMVar () {return MVAR(T) (new MVar_<T> ());}
+
+}

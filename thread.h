@@ -24,7 +24,7 @@ namespace _thread { // private namespace
 
 /** register this thread, run action, and unregister when finished. Report error on error.
  * A type: void A(), string A.toString() for thread description */
-template <template <typename> class A> void runAction (A<Unit> action) {
+template <template <typename> class A> void runAction (A<void> action) {
 	try {
 		action();
 	} catch (boost::thread_interrupted &e) {
@@ -42,7 +42,7 @@ namespace thread {
 
 /** Start new thread executing action.
  * A type: void A(), string A.toString() for thread description. */
-template <template <typename> class A> Thread fork (A<Unit> action) {
+template <template <typename> class A> Thread fork (A<void> action) {
 	return boost::shared_ptr<boost::thread> (new boost::thread (boost::bind (_thread::runAction<A>, action)));
 }
 
