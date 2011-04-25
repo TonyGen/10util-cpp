@@ -9,6 +9,27 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <sstream>
 
+namespace _io { // private namespace
+
+template <class S, class X, class A> void readStream (S &stream, A &value) {
+	X archive (stream);
+	archive >> value;
+}
+
+template <class S, class X, class A> void writeStream (S &stream, const A &value) {
+	X archive (stream);
+	archive << value;
+	stream.flush();
+
+	/* debug logging
+	std::stringstream ss;
+	boost::archive::text_oarchive ar (ss);
+	ar << value;
+	std::cout << "Sent: " << ss.str() << std::endl; */
+}
+
+}
+
 namespace io {
 
 typedef boost::shared_ptr <std::istream> IStream;
@@ -20,8 +41,7 @@ template <class A> class Source {
 public:
 	Source (IStream in) : in(in) {}
 	Source<A> & operator>> (A &a) {
-		boost::archive::text_iarchive arc (*in);
-		arc >> a;
+		_io::readStream <std::istream, boost::archive::text_iarchive, A> (*in, a);
 		return *this;
 	}
 };
@@ -31,9 +51,7 @@ template <class A> class Sink {
 public:
 	Sink (OStream out) : out(out) {}
 	Sink<A> & operator<< (const A &a) {
-		boost::archive::text_oarchive arc (*out);
-		arc << a;
-		out->flush();
+		_io::writeStream <std::ostream, boost::archive::text_oarchive, A> (*out, a);
 		return *this;
 	}
 };
@@ -42,14 +60,11 @@ template <class I, class O> class SourceSink {
 	IOStream inout;
 public:
 	SourceSink<I,O> & operator>> (I &a) {
-		boost::archive::text_iarchive arc (*inout);
-		arc >> a;
+		_io::readStream <std::iostream, boost::archive::text_iarchive, I> (*inout, a);
 		return *this;
 	}
 	SourceSink<I,O> & operator<< (const O &a) {
-		boost::archive::text_oarchive arc (*inout);
-		arc << a;
-		inout->flush();
+		_io::writeStream <std::iostream, boost::archive::text_oarchive, O> (*inout, a);
 		return *this;
 	}
 	SourceSink (IOStream inout) : inout(inout) {}

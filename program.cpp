@@ -62,7 +62,7 @@ boost::optional <std::string> program::lookup (std::string key, Options options)
 	return 0;
 }
 
-std::string program::optionsString (Options programOptions) {
+std::string program::optionsString (const Options &programOptions) {
 	std::stringstream ss;
 	for (unsigned i = 0; i < programOptions.size(); i++) {
 		std::string key = programOptions[i].first;
@@ -166,14 +166,4 @@ pid_t program::start (bool clear, program::Program program, program::IO io) {
 		std::cout << std::endl;
 		return pid;
 	}
-}
-
-std::ostream& operator<< (std::ostream& out, const program::Program& p) {
-	out << p.executable << " " << program::optionsString (p.options);
-	return out;
-}
-
-std::ostream& operator<< (std::ostream& out, const program::IO& io) {
-	out << "IO (" << io.in << ", " << io.out << ", " << io.err << ")";
-	return out;
 }

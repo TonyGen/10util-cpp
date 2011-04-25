@@ -3,6 +3,7 @@
 #ifndef PROGRAM_H_
 #define PROGRAM_H_
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <utility>
@@ -29,10 +30,13 @@ namespace program {
 	boost::optional<std::string> lookup (std::string key, Options options);
 
 	/** Flatten with space separation while prefixing non-empty keys with "--" unless they already start with "-" */
-	std::string optionsString (Options programOptions);
+	std::string optionsString (const Options &programOptions);
 
 	/** Program with options, ready to run */
-	struct Program {
+	class Program {
+		friend std::ostream& operator<< (std::ostream& out, const Program &p) {
+			out << p.executable << " " << program::optionsString (p.options); return out;}
+	public:
 		std::string prepCommand;  // Executed before running program (must finish) upon fresh/clear start
 		std::string executable;  // Program name, PATH is searched
 		Options options;  // Command-line arguments supplied to executable
@@ -51,10 +55,6 @@ namespace program {
 	pid_t start (bool clear, Program program, IO io = IO());
 
 }
-
-std::ostream & operator<< (std::ostream &, const program::Program &);
-std::ostream & operator<< (std::ostream &, const program::IO &);
-
 
 namespace boost {namespace serialization {
 
