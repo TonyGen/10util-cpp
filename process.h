@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <iostream>
 #include <boost/algorithm/string.hpp>
+#include <boost/shared_ptr.hpp>
 #include "program.h"
 #include "unit.h"
 #include "util.h" // to_string
@@ -13,14 +14,14 @@
 namespace process {
 
 /** Process running a Program */
-class Process {
-	friend std::ostream& operator<< (std::ostream& out, const Process& p) {out << p.shortName(); return out;}
+class Process_ {
+	friend std::ostream& operator<< (std::ostream& out, const Process_& p) {out << p.shortName(); return out;}
 public:
 	program::Program program;
 	unsigned id; // our id, not OS id
 	pid_t pid; // OS id
-	Process (program::Program program, unsigned id) : program(program), id(id) {}
-	Process () {}  // for serialization
+	Process_ (program::Program program, unsigned id) : program(program), id(id) {}
+	Process_ () {}  // for serialization
 	std::string shortName () const {
 		std::vector<std::string> parts;
 		boost::split (parts, program.executable, boost::is_any_of ("/"));
@@ -28,6 +29,8 @@ public:
 	}
 	std::string outFilename () const {return shortName() + ".out";}
 };
+
+typedef boost::shared_ptr<Process_> Process;
 
 /** Launch program with its stdout redirected to a local file named executable-id */
 Process launch (program::Program program);

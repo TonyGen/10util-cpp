@@ -55,4 +55,15 @@ namespace program {
 std::ostream & operator<< (std::ostream &, const program::Program &);
 std::ostream & operator<< (std::ostream &, const program::IO &);
 
+
+namespace boost {namespace serialization {
+
+template <class Archive> void serialize (Archive & ar, program::Program & x, const unsigned version) {
+	ar & x.prepCommand;
+	ar & x.executable;
+	ar & x.options;
+}
+
+}}
+
 #endif /* PROGRAM_H_ */
