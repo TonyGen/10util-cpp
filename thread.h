@@ -4,6 +4,8 @@
 #define THREAD_H_
 
 #include <iostream>
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <10util/mvar.h>
 #include <10util/unit.h>
@@ -65,7 +67,7 @@ public:
 namespace _thread {
 
 /** Run action. On failure terminate given threads and set evar to current thread */
-template <template <typename> class A> void runParAction (var::MVar_< std::vector<thread::Thread> > *vThreads, boost::shared_ptr<thread::FailedThread> *evar, A<Unit> action) {
+template <template <typename> class A> void runParAction (var::MVar_< std::vector<thread::Thread> > *vThreads, boost::shared_ptr<thread::FailedThread> *evar, A<void> action) {
 	try {
 		action ();
 	} catch (std::exception &e) {
@@ -80,19 +82,23 @@ template <template <typename> class A> void runParAction (var::MVar_< std::vecto
 namespace thread {
 
 /** Fork each control action and continuous action and wait for all control actions to finish then terminate continuous actions. If any action fails then terminate the rest and reraise exception in main thread. Also, if main thread is interrupted then terminate all the threads. */
-template <template <typename> class A> void parallel (std::vector< A<Unit> > controlActions, std::vector< A<Unit> > continuousActions) {
+template <template <typename> class A> void parallel (std::vector< A<void> > controlActions, std::vector< A<void> > continuousActions) {
 	// wrap threads in MVar so all threads are added before anyone fails and terminates them all, otherwise later ones would not be terminated because they started after failure.
 	std::vector<Thread> _threads;
 	var::MVar_< std::vector<Thread> > vThreads (_threads);
 	boost::shared_ptr <FailedThread> evar;
-	boost::function <void (Thread, std::exception&)> run = boost::bind (_thread::runParAction<A>, &vThreads, &evar, _1);
+	boost::function1< void, A<void> > run = boost::bind (_thread::runParAction<A>, &vThreads, &evar, _1);
 	try {
 		{
 			var::Access< std::vector<Thread> > threads (vThreads);
-			for (unsigned i = 0; i < controlActions.size(); i++)
-				threads->push_back (fork (boost::bind (run, controlActions[i])));
-			for (unsigned i = 0; i < continuousActions.size(); i++)
-				threads->push_back (fork (boost::bind (run, continuousActions[i])));
+			for (unsigned i = 0; i < controlActions.size(); i++) {
+				boost::function0<void> f = boost::bind (run, controlActions[i]);
+				threads->push_back (fork (f));
+			}
+			for (unsigned i = 0; i < continuousActions.size(); i++) {
+				boost::function0<void> f = boost::bind (run, continuousActions[i]);
+				threads->push_back (fork (f));
+			}
 		}
 		std::vector<Thread> threads = vThreads.read();
 		for (unsigned i = 0; i < controlActions.size(); i++)
