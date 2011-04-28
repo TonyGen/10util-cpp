@@ -51,6 +51,7 @@ public:
 template <class A> struct Source {
 	IStream in;
 	Source (IStream in) : in(in) {}
+	Source () {}
 	Source<A> & operator>> (A &value) {
 		//boost::archive::text_iarchive archive (*in);
 		//archive >> value;
@@ -67,6 +68,7 @@ template <class A> struct Source {
 template <class A> struct Sink {
 	OStream out;
 	Sink (OStream out) : out(out) {}
+	Sink () {}
 	Sink<A> & operator<< (const A &value) {
 		//boost::archive::text_oarchive archive (*out);
 		//archive << value;
@@ -85,6 +87,7 @@ template <class I, class O> struct SourceSink {
 	Sink<O> sink;
 	SourceSink (IOStream inout) : source (Source<I> (inout)), sink (Sink<O> (inout)) {}
 	SourceSink (IStream in, OStream out) : source (Source<I> (in)), sink (Sink<O> (out)) {}
+	SourceSink () {}
 };
 
 }
