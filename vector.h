@@ -44,6 +44,21 @@ template <class A> std::vector<A> filter (bool (*pred) (A), std::vector<A> list)
 	return filter (f, list);
 }
 
+template <class A> std::vector<A> take (unsigned n, std::vector<A> items) {
+	std::vector<A> list;
+	unsigned m = n < items.size() ? n : items.size();
+	for (unsigned i = 0; i < m; i++)
+		list.push_back (items[i]);
+	return list;
+}
+
+template <class A> std::vector<A> drop (unsigned n, std::vector<A> items) {
+	std::vector<A> list;
+	for (unsigned i = n; i < items.size(); i++)
+		list.push_back (items[i]);
+	return list;
+}
+
 /** Recycle items until N listed */
 template <class A> std::vector<A> cycle (unsigned n, std::vector<A> items) {
 	unsigned c = items.size();

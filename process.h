@@ -15,7 +15,6 @@ namespace process {
 
 /** Process running a Program */
 class Process_ {
-	friend std::ostream& operator<< (std::ostream& out, const Process_& p) {out << p.shortName(); return out;}
 public:
 	program::Program program;
 	unsigned id; // our id, not OS id
@@ -50,5 +49,7 @@ Unit signal (Signal, Process);
 Unit terminate (Process p);
 
 }
+
+std::ostream& operator<< (std::ostream& out, const process::Process_& p) {out << p.shortName(); return out;}
 
 #endif /* PROCESS_H_ */

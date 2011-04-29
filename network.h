@@ -46,6 +46,9 @@ public:
 /** Connect to given server, returning connection stream */
 io::IOStream connect (HostPort hostPort);
 
+/** Return persistent connection for this thread to given hostPort, creating one if first time for this thread */
+io::IOStream connection (HostPort hostPort);
+
 }
 
 

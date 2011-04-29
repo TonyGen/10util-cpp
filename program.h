@@ -33,10 +33,7 @@ namespace program {
 	std::string optionsString (const Options &programOptions);
 
 	/** Program with options, ready to run */
-	class Program {
-		friend std::ostream& operator<< (std::ostream& out, const Program &p) {
-			out << p.executable << " " << program::optionsString (p.options); return out;}
-	public:
+	struct Program {
 		std::string prepCommand;  // Executed before running program (must finish) upon fresh/clear start
 		std::string executable;  // Program name, PATH is searched
 		Options options;  // Command-line arguments supplied to executable
@@ -55,6 +52,11 @@ namespace program {
 	pid_t start (bool clear, Program program, IO io = IO());
 
 }
+
+/* Printing & Serialization */
+
+std::ostream& operator<< (std::ostream& out, const program::Program &p) {
+	out << p.executable << " " << program::optionsString (p.options); return out;}
 
 namespace boost {namespace serialization {
 

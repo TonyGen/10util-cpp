@@ -1,6 +1,8 @@
 
 #include "network.h"
 #include <boost/asio.hpp>
+#include <map>
+#include <utility> // pair
 
 using boost::asio::ip::tcp;
 
@@ -30,4 +32,21 @@ io::IOStream network::connect (HostPort hostPort) {
 	boost::shared_ptr<tcp::iostream> sock (new tcp::iostream (hostPort.hostname, to_string (hostPort.port)));
 	if (! *sock) throw CantConnect (hostPort);
 	return sock;
+}
+
+typedef std::map< network::HostPort, io::IOStream > Connections;
+
+static boost::thread_specific_ptr<Connections> PersistentConnections;
+
+/** Return persistent connection for this thread to given hostPort, creating one if first time for this thread or current connection is bad */
+io::IOStream network::connection (HostPort hostPort) {
+	if (! PersistentConnections.get()) PersistentConnections.reset (new Connections);
+	Connections::iterator it = PersistentConnections->find (hostPort);
+	if (it != PersistentConnections->end()) {
+		if (it->second->good()) return it->second;
+		else std::cout << "dropping bad persistent connection to " << hostPort << " and creating new one." << std::endl;
+	}
+	io::IOStream stream = connect (hostPort);
+	PersistentConnections->insert (std::make_pair (hostPort, stream));
+	return stream;
 }
