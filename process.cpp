@@ -1,6 +1,8 @@
 
 #include "process.h"
 #include "file.h"
+#include <sys/wait.h>
+#include <signal.h>
 
 static void start (bool clear, process::Process proc) {
 	FDW out = openFile (proc->outFilename(), O_WRONLY | O_CREAT | (clear ? O_TRUNC : O_APPEND), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
