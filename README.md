@@ -1,3 +1,12 @@
+Install dependent library first:
+
+- boost-dev
+- boost-system-dev
+- boost-thread-dev
+- boost-filesystem-dev
+- boost-serialization-dev
+- boost-asio-dev
+
 Download and remove '-ccp' suffix
 	git clone git://github.com/TonyGen/10util-cpp.git 10util
 	cd 10util

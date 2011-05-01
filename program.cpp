@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <cerrno>
-#include "10util/util.h"
+#include "util.h"
 
 /** Short hand for options list of one pair */
 program::Options program::options (std::string name, std::string value) {
