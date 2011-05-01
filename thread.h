@@ -80,7 +80,8 @@ template <template <typename> class A> void runParAction (var::MVar_< std::vecto
 
 namespace thread {
 
-/** Fork each control action and continuous action and wait for all control actions to finish then terminate continuous actions. If any action fails then terminate the rest and reraise exception in main thread. Also, if main thread is interrupted then terminate all the threads. */
+/** Fork each control action and continuous action and wait for all control actions to finish then terminate continuous actions. If any action fails then terminate the rest and reraise exception in main thread. Also, if main thread is interrupted then terminate all the threads.
+ * A is any function object (operator() method) that returns void */
 template <template <typename> class A> void parallel (std::vector< A<void> > controlActions, std::vector< A<void> > continuousActions) {
 	// wrap threads in MVar so all threads are added before anyone fails and terminates them all, otherwise later ones would not be terminated because they started after failure.
 	std::vector<Thread> _threads;
