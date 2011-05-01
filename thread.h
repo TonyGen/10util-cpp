@@ -6,8 +6,8 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
-#include <10util/mvar.h>
-#include <10util/unit.h>
+#include "mvar.h"
+#include "unit.h"
 
 namespace thread {
 
