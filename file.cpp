@@ -3,6 +3,7 @@
 #include "util.h" // to_string
 #include <cerrno>
 #include <unistd.h>
+#include <stdexcept>
 
 Pipe makePipe () {
 	int pipeFds[2];

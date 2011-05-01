@@ -7,6 +7,7 @@
 #include <ostream>
 #include <vector>
 #include <map>
+#include <stdexcept>
 
 inline std::vector <std::string> argsVector (int argc, char* argv[]) {
 	std::vector <std::string> args;
