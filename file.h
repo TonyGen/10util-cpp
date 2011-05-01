@@ -1,7 +1,6 @@
 /* Miscellaneous helper function on file descriptors */
 
-#ifndef UTIL_FILE_H_
-#define UTIL_FILE_H_
+#pragma once
 
 #import <string>
 #include <fcntl.h>
@@ -25,5 +24,3 @@ void closeFd (FD fd);
 
 /** Throw exception on error */
 void dupFd (FD from, FD to);
-
-#endif /* UTIL_FILE_H_ */

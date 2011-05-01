@@ -1,7 +1,6 @@
-/* Untyped and typed IO streams */
+/* IO streams and serialization */
 
-#ifndef UTIL_IO_H_
-#define UTIL_IO_H_
+#pragma once
 
 #include <iostream>
 #include <boost/smart_ptr.hpp>
@@ -74,5 +73,3 @@ template <class Archive> void serialize (Archive & ar, ::io::Code & x, const uns
 }
 
 }}
-
-#endif /* IO_H_ */

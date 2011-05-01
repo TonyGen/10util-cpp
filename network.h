@@ -1,7 +1,6 @@
 /* TCP client and server connections */
 
-#ifndef UTIL_NETWORK_H_
-#define UTIL_NETWORK_H_
+#pragma once
 
 #include "io.h"
 #include <boost/thread.hpp>
@@ -50,6 +49,3 @@ io::IOStream connect (HostPort hostPort);
 io::IOStream connection (HostPort hostPort);
 
 }
-
-
-#endif /* UTIL_NETWORK_H_ */

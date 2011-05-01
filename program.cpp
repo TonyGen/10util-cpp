@@ -155,15 +155,6 @@ pid_t program::start (bool clear, program::Program program, program::IO io) {
 		_exit (EXIT_FAILURE);  // execvp only returns on error
 	} else if (pid < 0)
 		throw std::runtime_error ("Failed to launch: " + program.executable + program::optionsString (program.options));
-	else { // This is the parent process
-		// log launch
-		std::cout << "launch " << pid << ":";
-		unsigned j = 0;
-		while (args[j] != NULL) std::cout << " " << args[j++];
-		if (io.in != 0) std::cout << " < " << io.in;
-		if (io.out != 1) std::cout << (clear ? " > " : " > ") << io.out;
-		if (io.err != 2) std::cout << (clear ? " >> " : " 2>> ") << io.err;
-		std::cout << std::endl;
+	else // This is the parent process
 		return pid;
-	}
 }

@@ -1,7 +1,6 @@
-/* */
+/* Program (executable) launching with possible redirection of stdin/out/err */
 
-#ifndef PROGRAM_H_
-#define PROGRAM_H_
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -9,7 +8,7 @@
 #include <utility>
 #include <boost/shared_ptr.hpp>
 #include <boost/optional.hpp>
-#include <10util/file.h>  // FD types
+#include "file.h"  // FD types
 
 namespace program {
 
@@ -55,7 +54,7 @@ namespace program {
 
 /* Printing & Serialization */
 
-std::ostream& operator<< (std::ostream& out, const program::Program &p) {
+inline std::ostream& operator<< (std::ostream& out, const program::Program &p) {
 	out << p.executable << " " << program::optionsString (p.options); return out;}
 
 namespace boost {namespace serialization {
@@ -67,5 +66,3 @@ template <class Archive> void serialize (Archive & ar, program::Program & x, con
 }
 
 }}
-
-#endif /* PROGRAM_H_ */

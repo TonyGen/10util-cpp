@@ -1,7 +1,6 @@
 /* Miscellaneous helper functions -ajh */
 
-#ifndef UTIL_H_
-#define UTIL_H_
+#pragma once
 
 #include <boost/function.hpp>
 #include <sstream>
@@ -54,5 +53,3 @@ template <class T> T parse_string (std::string str) {
 
 /** Tokenize string using given char as delimeter */
 std::vector <std::string> split_string (char delimeter, std::string str);
-
-#endif /* UTIL_H_ */

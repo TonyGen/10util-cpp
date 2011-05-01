@@ -3,10 +3,12 @@
 #include "file.h"
 
 static void start (bool clear, process::Process proc) {
-	FDW outW = openFile (proc->outFilename(), O_WRONLY | O_CREAT | (clear ? O_TRUNC : O_APPEND), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	program::IO io (0, outW, 2);
+	FDW out = openFile (proc->outFilename(), O_WRONLY | O_CREAT | (clear ? O_TRUNC : O_APPEND), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	program::IO io (0, out, 2);
 	proc->pid = program::start (clear, proc->program, io);
-	closeFd (outW); // child process already duplicated it
+	closeFd (out); // child process already duplicated it
+	std::cout << (clear ? "launch " : "restart ") << proc->id << "(" << proc->pid << ")" << ": ";
+	std::cout << proc->program << (clear ? " > " : " >> ") << proc->outFilename() << std::endl;
 }
 
 static volatile unsigned nextProcessId;

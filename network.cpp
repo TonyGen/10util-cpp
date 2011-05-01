@@ -14,9 +14,10 @@ static boost::asio::io_service IO;
 /** Accept client connections, running server on each one. Does not return. */
 static void acceptLoop (boost::shared_ptr<tcp::acceptor> acceptor, boost::function1 <void, io::IOStream> server) {
 	for (;;) {
-		boost::shared_ptr<tcp::iostream> stream (new tcp::iostream);
-		acceptor->accept (*stream->rdbuf());
-		server (stream);
+		boost::shared_ptr<tcp::iostream> sock (new tcp::iostream);
+		acceptor->accept (*sock->rdbuf());
+		sock->exceptions (sock->eofbit | sock->failbit | sock->badbit); // raise exception when accessing closed or failed socket
+		server (sock);
 	}
 }
 
@@ -31,6 +32,7 @@ boost::shared_ptr<boost::thread> network::listen (Port port, boost::function1 <v
 io::IOStream network::connect (HostPort hostPort) {
 	boost::shared_ptr<tcp::iostream> sock (new tcp::iostream (hostPort.hostname, to_string (hostPort.port)));
 	if (! *sock) throw CantConnect (hostPort);
+	sock->exceptions (sock->eofbit | sock->failbit | sock->badbit); // raise exception when accessing closed or failed socket
 	return sock;
 }
 

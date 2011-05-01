@@ -1,7 +1,6 @@
 /** Thread helper functions */
 
-#ifndef THREAD_H_
-#define THREAD_H_
+#pragma once
 
 #include <iostream>
 #include <boost/function.hpp>
@@ -115,6 +114,6 @@ template <template <typename> class A> void parallel (std::vector< A<void> > con
 	}
 }
 
-}
+inline void sleep (float secs) {boost::this_thread::sleep (boost::posix_time::milliseconds (secs * 1000));}
 
-#endif /* THREAD_H_ */
+}

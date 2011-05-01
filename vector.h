@@ -1,7 +1,6 @@
 /* Helper functions on vectors */
 
-#ifndef UTIL_VECTOR_H_
-#define UTIL_VECTOR_H_
+#pragma once
 
 #include <vector>
 #include <boost/function.hpp>
@@ -155,5 +154,3 @@ template <class A> std::vector<A> items (A a1, A a2, A a3, A a4) {
 	list.push_back (a4);
 	return list;
 }
-
-#endif /* UTIL_VECTOR_H_ */

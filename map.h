@@ -1,7 +1,6 @@
 /* Helper functions for map */
 
-#ifndef UTIL_MAP_H_
-#define UTIL_MAP_H_
+#pragma once
 
 #include <map>
 #include <boost/optional.hpp>
@@ -20,5 +19,3 @@ template <class K, class V> boost::optional<V> remove (std::map<K,V> map, K key)
 }
 
 }
-
-#endif /* UTIL_MAP_H_ */

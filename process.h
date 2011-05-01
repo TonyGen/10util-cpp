@@ -1,7 +1,6 @@
 /** Executes job requests (threads and processes), keeps track of them, and allows you read their stdout/err, and kill them */
 
-#ifndef PROCESS_H_
-#define PROCESS_H_
+#pragma once
 
 #include <signal.h>
 #include <iostream>
@@ -48,8 +47,9 @@ Unit signal (Signal, Process);
 /** Kill process. No-op if already dead */
 Unit terminate (Process p);
 
+/** Program process is running */
+inline program::Program program (Process process) {return process->program;}
+
 }
 
-std::ostream& operator<< (std::ostream& out, const process::Process_& p) {out << p.shortName(); return out;}
-
-#endif /* PROCESS_H_ */
+inline std::ostream& operator<< (std::ostream& out, const process::Process_& p) {out << p.shortName(); return out;}
