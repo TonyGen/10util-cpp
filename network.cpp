@@ -7,7 +7,13 @@
 using boost::asio::ip::tcp;
 
 /** Must be set at startup, if you want to interact on public network */
-network::Hostname network::MyHostname = "localhost";
+static network::Hostname MyHostname = "localhost";
+
+/** Must be set before listening on network. A machine could have multiple hostnames, this is the one advertised to other machines on the network. */
+void network::initMyHostname (Hostname hostname) {MyHostname = hostname;}
+
+/** Hostname that this process listens on and advertises. Must be set by user at startup, see above. */
+network::Hostname network::myHostname() {return MyHostname;}
 
 static boost::asio::io_service IO;
 

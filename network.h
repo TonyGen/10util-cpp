@@ -10,6 +10,13 @@
 namespace network {
 
 typedef std::string Hostname;
+
+/** Must be set before listening on network. A machine could have multiple hostnames, this is the one advertised to other machines on the network. */
+void initMyHostname (Hostname);
+
+/** Hostname that this process listens on and advertises. Must be set by user at startup, see above. */
+Hostname myHostname();
+
 typedef unsigned short Port;
 
 class HostPort {
@@ -25,9 +32,6 @@ public:
 	Port port;
 	HostPort (Hostname hostname, Port port) : hostname(hostname), port(port) {}
 };
-
-/** Hostname that this process listens on and advertises. Must be set by user at startup. */
-extern Hostname MyHostname;
 
 /** Fork a thread that listens for client connections on given port. This thread runs given server function on every new connection. server should fork if wants to do a long running process. Kill returned listener thread when done listening. */
 boost::shared_ptr <boost::thread> listen (Port port, boost::function1 <void, io::IOStream> server);
