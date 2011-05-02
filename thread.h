@@ -29,7 +29,7 @@ template <template <typename> class A> void runAction (A<void> action) {
 	try {
 		action();
 	} catch (boost::thread_interrupted &e) {
-		std::cout << boost::this_thread::get_id() << " interrupted." << std::endl;
+		std::cout << boost::this_thread::get_id() << " interrupted: " << e.what() << std::endl;
 	} catch (std::exception &e) {
 		thread::threadErrorHandler (e);
 	} catch (...) {
