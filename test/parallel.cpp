@@ -11,31 +11,33 @@
 
 using namespace std;
 
-void one (int n) {
-	thread::sleep (n);
+void one () {
+	thread::sleep (1);
 	cout << "one" << endl;
 	// throw runtime_error ("yo");
+	thread::sleep (2);
+	cout << "one done" << endl;
 }
 
-void two (int n) {
-	thread::sleep (n);
+void two () {
+	thread::sleep (2);
 	cout << "two" << endl;
 }
 
-void three (int n) {
-	thread::sleep (n);
+void three () {
+	thread::sleep (3);
 	cout << "three" << endl;
 }
 
 int main () {
 	vector< boost::function0<void> > fore, aft;
-	fore.push_back (boost::bind (one, 1));
-	fore.push_back (boost::bind (two, 2));
-	aft.push_back (boost::bind (three, 3));
+	fore.push_back (boost::bind (one));
+	fore.push_back (boost::bind (two));
+	aft.push_back (boost::bind (three));
 	try {
 		thread::parallel (fore, aft);
 	} catch (exception &e) {
 		cerr << e.what() << endl;
 	}
-	cout << "done" << endl;
+	cout << "all done" << endl;
 }
