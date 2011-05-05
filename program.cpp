@@ -150,7 +150,7 @@ pid_t program::start (bool clear, program::Program program, program::IO io) {
 			execvp (program.executable.c_str(), args);
 		} catch (std::exception &e) {
 			pid_t pid = getpid();
-			std::cerr << "child " << pid << " failed: (" << typeid(e).name() << ") " << e.what() << std::endl;
+			std::cerr << "child " << pid << " failed: (" << typeName(e) << ") " << e.what() << std::endl;
 		}
 		_exit (EXIT_FAILURE);  // execvp only returns on error
 	} else if (pid < 0)

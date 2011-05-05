@@ -8,6 +8,7 @@
 #include <boost/thread.hpp>
 #include "mvar.h"
 #include "unit.h"
+#include "util.h" // typeName
 
 namespace thread {
 
@@ -70,7 +71,7 @@ template <template <typename> class A> void runParAction (var::MVar_< std::vecto
 	try {
 		action ();
 	} catch (std::exception &e) {
-		evar->reset (new thread::FailedThread (boost::this_thread::get_id(), typeid(e).name(), e.what()));
+		evar->reset (new thread::FailedThread (boost::this_thread::get_id(), typeName(e), e.what()));
 		var::Access< std::vector<thread::Thread> > threads (*vThreads);
 		for (unsigned i = 0; i < threads->size(); i++) (*threads)[i]->interrupt();
 	}

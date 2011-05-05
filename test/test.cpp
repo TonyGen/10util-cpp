@@ -3,6 +3,8 @@
 #include <10util/util.h>
 #include <cassert>
 #include <iostream>
+#include <boost/function.hpp>
+#include <10util/compile.h> // typeName
 
 using namespace std;
 
@@ -45,7 +47,12 @@ void test_parseInt () {
 	}
 }
 
+struct Foo {};
+
 int main (int argc, const char* argv[]) {
 	test_split();
 	test_parseInt();
+	cout << typeName<Foo>() << endl;
+	cout << typeName<int>() << endl;
+	cout << typeName< boost::function1<void,boost::function0<double> > >() << endl;
 }

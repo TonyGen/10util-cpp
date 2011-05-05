@@ -8,6 +8,15 @@
 #include <vector>
 #include <map>
 #include <stdexcept>
+#include <boost/units/detail/utility.hpp>
+
+template <class T> std::string typeName () {
+	return boost::units::detail::demangle (typeid(T).name());
+}
+
+template <class T> std::string typeName (const T &t) {
+	return boost::units::detail::demangle (typeid(t).name());
+}
 
 inline std::vector <std::string> argsVector (int argc, char* argv[]) {
 	std::vector <std::string> args;
@@ -48,7 +57,7 @@ template <class T> std::string to_string (const T& t) {
 template <class T> T parse_string (std::string str) {
 	std::istringstream ss (str);
 	T a;
-	if ((ss >> a).fail()) throw std::runtime_error ("error parsing \"" + str + "\" as type " + typeid(a).name());
+	if ((ss >> a).fail()) throw std::runtime_error ("error parsing \"" + str + "\" as type " + typeName(a));
 	return a;
 }
 
