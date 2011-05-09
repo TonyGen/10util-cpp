@@ -3,6 +3,7 @@
 #pragma once
 
 #include <vector>
+#include <sstream>
 #include <boost/function.hpp>
 
 template <class A> void push_all (std::vector<A>& list, const std::vector<A>& elems) {
