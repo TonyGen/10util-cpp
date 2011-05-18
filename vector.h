@@ -5,6 +5,14 @@
 #include <vector>
 #include <sstream>
 #include <boost/function.hpp>
+#include <set>
+
+template <class A> std::vector<A> fromSet (std::set<A> set) {
+	std::vector<A> list;
+	for (std::set<A>::iterator it = set.begin(); it != set.end(); ++it)
+		list.push_back (*it);
+	return list;
+}
 
 template <class A> void push_all (std::vector<A>& list, const std::vector<A>& elems) {
 	for (unsigned i = 0; i < elems.size(); i++)

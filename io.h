@@ -8,7 +8,6 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/thread.hpp>
 #include <sstream>
-#include "module.h"
 
 // serialization for standard types
 #include <boost/serialization/utility.hpp> // pair
@@ -18,8 +17,6 @@
 #define COUT (std::cout << boost::this_thread::get_id() << ": ")
 
 namespace io {
-
-module::DependentLibraries _ ("10util/io.h", items ("boost_serialization-mt"));
 
 typedef boost::shared_ptr <std::istream> IStream;
 typedef boost::shared_ptr <std::ostream> OStream;
