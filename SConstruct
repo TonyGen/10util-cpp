@@ -4,7 +4,7 @@ lib = SharedLibrary (libname, Glob('*.cpp'),
 	CCFLAGS = ['-g'],
 	CPPPATH = ['.', '/opt/local/include'],
 	LIBPATH = ['/opt/local/lib'],
-	LIBS = Split ('boost_thread-mt boost_filesystem-mt boost_system-mt boost_serialization-mt') )
+	LIBS = Split ('boost_system-mt boost_thread-mt boost_filesystem-mt boost_serialization-mt') )
 
 Alias ('install', '/usr/local')
 Install ('/usr/local/lib', lib)
