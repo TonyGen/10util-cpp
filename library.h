@@ -18,13 +18,15 @@ struct Library {
 	Library (Libname name, void* handle) : name(name), handle(handle) {}
 };
 
+//TODO: library delete file method
+
 /** Load library */
 Library load (Libname libname);
 
 /** Get address of named function or variable in given loaded library. F should be a function pointer or a pointer to the type of value that the variable holds. */
 template <class F> F sym (Library library, std::string funName) {
 	F ptr = (F) dlsym (library.handle, funName.c_str());
-	if (!ptr) throw std::runtime_error (funName + " not found in lib" + library.name + ".so: " + dlerror());
+	if (!ptr) throw std::runtime_error (funName + " not found in lib" + library.name + ".so(.dylib): " + dlerror());
 	return ptr;
 }
 
