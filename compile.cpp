@@ -2,6 +2,7 @@
 #include "compile.h"
 #include <cstdlib> // rand, system
 #include <fstream>
+#include "util.h" // to_string
 
 /** Generate unique var name */
 // TODO: make globally unique

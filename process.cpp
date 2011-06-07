@@ -23,10 +23,7 @@ process::Process process::launch (program::Program program) {
 }
 
 /** Restart program under same process object. Process must not already be running. */
-Unit process::restart (Process process) {
-	start (false, process);
-	return unit;
-}
+void process::restart (Process process) {start (false, process);}
 
 /** Wait for process to terminate returning its exit code */
 int process::waitFor (Process process) {
@@ -35,10 +32,7 @@ int process::waitFor (Process process) {
 	return status;
 }
 
-Unit process::signal (Signal s, Process p) {
-	kill (p->pid, s);
-	return unit;
-}
+void process::signal (Signal s, Process p) {kill (p->pid, s);}
 
 /** Kill process. No-op if already dead */
-Unit process::terminate (Process p) {signal (SIGTERM, p); return unit;}
+void process::terminate (Process p) {signal (SIGTERM, p);}

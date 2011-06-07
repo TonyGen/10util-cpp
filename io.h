@@ -10,6 +10,7 @@
 #include <sstream>
 
 // serialization for standard types
+//#include <boost/serialization/serialization.hpp>
 #include <boost/serialization/utility.hpp> // pair
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/variant.hpp>
@@ -36,6 +37,7 @@ class Code {
 		in.read (buffer, size);
 		x.data.assign (buffer, size);
 		delete[] buffer;
+		return in;
 	}
 public:
 	std::string data;

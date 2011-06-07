@@ -7,7 +7,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/shared_ptr.hpp>
 #include "program.h"
-#include "unit.h"
 #include "util.h" // to_string
 
 namespace process {
@@ -34,7 +33,7 @@ typedef boost::shared_ptr<Process_> Process;
 Process launch (program::Program program);
 
 /** Restart program (does not run prepCommand first) */
-Unit restart (Process deadProcess);
+void restart (Process deadProcess);
 
 /** Wait for process to terminate returning its exit code */
 int waitFor (Process process);
@@ -42,10 +41,10 @@ int waitFor (Process process);
 typedef int Signal;
 
 /** Send signal to process. No-op if process dead */
-Unit signal (Signal, Process);
+void signal (Signal, Process);
 
 /** Kill process. No-op if already dead */
-Unit terminate (Process p);
+void terminate (Process p);
 
 /** Program process is running */
 inline program::Program program (Process process) {return process->program;}

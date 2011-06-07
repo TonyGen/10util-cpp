@@ -54,6 +54,7 @@ template <class A, class B> std::istream& operator>> (std::istream& in, Either<A
 	in.ignore (1); // skip space
 	if (x.isRight) in >> x.right;
 	else in >> x.left;
+	return in;
 }
 
 namespace boost {namespace serialization {

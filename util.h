@@ -8,15 +8,7 @@
 #include <vector>
 #include <map>
 #include <stdexcept>
-#include <boost/units/detail/utility.hpp>
-
-template <class T> std::string typeName () {
-	return boost::units::detail::demangle (typeid(T).name());
-}
-
-template <class T> std::string typeName (const T &t) {
-	return boost::units::detail::demangle (typeid(t).name());
-}
+#include "type.h"
 
 inline std::vector <std::string> argsVector (int argc, char* argv[]) {
 	std::vector <std::string> args;

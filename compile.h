@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 #include "library.h"
-#include "util.h" // typeName
+#include "type.h"
 #include <cstdio>
 
 namespace compile {

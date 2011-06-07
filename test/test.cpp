@@ -1,6 +1,8 @@
 // Compile as: g++ -I/opt/local/include test.cpp -o test -l10util
 
-#include <10util/util.h>
+#include "../util.h"
+//#include <10util/util.h>
+//#include <10util/type.h>
 #include <cassert>
 #include <iostream>
 #include <boost/function.hpp>
@@ -45,13 +47,11 @@ int add (int x, int y) {return x + y;}
 
 INITIALIZE (
 	cout << "Hello, initializer " << add(2,3) << endl;
-	cout << "yes!" << endl;
 )
 
 int main (int argc, const char* argv[]) {
 	test_split();
 	test_parseInt();
 	cout << typeName<Foo>() << endl;
-	cout << typeName<int>() << endl;
 	cout << typeName< boost::function1<void,boost::function0<double> > >() << endl;
 }

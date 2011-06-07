@@ -7,8 +7,7 @@
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include "mvar.h"
-#include "unit.h"
-#include "util.h" // typeName
+#include "type.h"
 
 namespace thread {
 
