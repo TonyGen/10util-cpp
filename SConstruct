@@ -1,7 +1,7 @@
 libname = '10util'
 
 lib = SharedLibrary (libname, Glob('*.cpp'),
-	CCFLAGS = ['-g'],
+	CCFLAGS = ['-g', '-rdynamic'],
 	CPPPATH = ['.', '/opt/local/include'],
 	LIBPATH = ['/opt/local/lib'],
 	LIBS = Split ('boost_system-mt boost_thread-mt boost_filesystem-mt boost_serialization-mt') )

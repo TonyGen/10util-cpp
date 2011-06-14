@@ -7,12 +7,12 @@
 #include <boost/function.hpp>
 #include <set>
 
-template <class A> std::vector<A> fromSet (std::set<A> set) {
-	std::vector<A> list;
-	for (std::set<A>::iterator it = set.begin(); it != set.end(); ++it)
-		list.push_back (*it);
-	return list;
-}
+//template <class A> std::vector<A> fromSet (std::set<A> set) {
+//	std::vector<A> list;
+//	for (std::set<A>::iterator it = set.begin(); it != set.end(); ++it)
+//		list.push_back (*it);
+//	return list;
+//}
 
 template <class A> void push_all (std::vector<A>& list, const std::vector<A>& elems) {
 	for (unsigned i = 0; i < elems.size(); i++)
@@ -161,5 +161,65 @@ template <class A> std::vector<A> items (A a1, A a2, A a3, A a4) {
 	list.push_back (a2);
 	list.push_back (a3);
 	list.push_back (a4);
+	return list;
+}
+
+template <class A> std::vector<A> items (A a1, A a2, A a3, A a4, A a5) {
+	std::vector<A> list;
+	list.push_back (a1);
+	list.push_back (a2);
+	list.push_back (a3);
+	list.push_back (a4);
+	list.push_back (a5);
+	return list;
+}
+
+template <class A> std::vector<A> items (A a1, A a2, A a3, A a4, A a5, A a6) {
+	std::vector<A> list;
+	list.push_back (a1);
+	list.push_back (a2);
+	list.push_back (a3);
+	list.push_back (a4);
+	list.push_back (a5);
+	list.push_back (a6);
+	return list;
+}
+
+template <class A> std::vector<A> items (A a1, A a2, A a3, A a4, A a5, A a6, A a7) {
+	std::vector<A> list;
+	list.push_back (a1);
+	list.push_back (a2);
+	list.push_back (a3);
+	list.push_back (a4);
+	list.push_back (a5);
+	list.push_back (a6);
+	list.push_back (a7);
+	return list;
+}
+
+template <class A> std::vector<A> items (A a1, A a2, A a3, A a4, A a5, A a6, A a7, A a8) {
+	std::vector<A> list;
+	list.push_back (a1);
+	list.push_back (a2);
+	list.push_back (a3);
+	list.push_back (a4);
+	list.push_back (a5);
+	list.push_back (a6);
+	list.push_back (a7);
+	list.push_back (a8);
+	return list;
+}
+
+template <class A> std::vector<A> items (A a1, A a2, A a3, A a4, A a5, A a6, A a7, A a8, A a9) {
+	std::vector<A> list;
+	list.push_back (a1);
+	list.push_back (a2);
+	list.push_back (a3);
+	list.push_back (a4);
+	list.push_back (a5);
+	list.push_back (a6);
+	list.push_back (a7);
+	list.push_back (a8);
+	list.push_back (a9);
 	return list;
 }

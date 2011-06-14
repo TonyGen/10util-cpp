@@ -8,6 +8,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/thread.hpp>
 #include <sstream>
+#include "except.h"
 
 // serialization for standard types
 //#include <boost/serialization/serialization.hpp>
@@ -44,6 +45,20 @@ public:
 	Code (std::string data) : data(data) {}
 	Code () {}
 };
+
+template <class A> A read (boost::archive::text_iarchive &ar) {
+	A a;
+	try {ar >> a;} catch (std::exception &e) {except::raise (e);}
+	return a;
+}
+
+template <class A> void read (boost::archive::text_iarchive &ar, A &a) {
+	try {ar >> a;} catch (std::exception &e) {except::raise (e);}
+}
+
+template <class A> void write (boost::archive::text_oarchive &ar, const A &a) {
+	try {ar << a;} catch (std::exception &e) {except::raise (e);}
+}
 
 template <class A> A decode (Code x) {
 	std::stringstream ss (x.data);
