@@ -2,7 +2,7 @@
 
 #pragma once
 
-#import <string>
+#include <string>
 #include <fcntl.h>
 
 typedef int FD; // File descriptor
