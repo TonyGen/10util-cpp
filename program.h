@@ -36,6 +36,9 @@ namespace program {
 		std::string prepCommand;  // Executed before running program (must finish) upon fresh/clear start
 		std::string executable;  // Program name, PATH is searched
 		Options options;  // Command-line arguments supplied to executable
+		Program (std::string prepCommand, std::string executable, Options options) :
+			prepCommand(prepCommand), executable(executable), options(options) {}
+		Program () {}
 	};
 
 	/** File descriptors for program input, output, and error. Use 0/1/2 for stdin/out/err */
