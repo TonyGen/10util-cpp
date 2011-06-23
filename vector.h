@@ -14,6 +14,12 @@
 //	return list;
 //}
 
+/** Non-destructively add element to back of list */
+template <class A> std::vector<A> add (std::vector<A> list, A item) {
+	list.push_back (item);
+	return list;
+}
+
 template <class A> void push_all (std::vector<A>& list, const std::vector<A>& elems) {
 	for (unsigned i = 0; i < elems.size(); i++)
 		list.push_back (elems[i]);

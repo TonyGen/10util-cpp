@@ -8,8 +8,11 @@
 #include <boost/shared_ptr.hpp>
 #include "program.h"
 #include "util.h" // to_string
+#include "compile.h"
 
 namespace process {
+
+const compile::LinkContext module ("10util", "10util/process.h");
 
 /** Process running a Program */
 class Process_ {

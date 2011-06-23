@@ -4,6 +4,21 @@
 #include <fstream>
 #include "util.h" // to_string
 
+compile::LinkContext compile::LinkContext::operator+ (const LinkContext &ctx) const {
+	return joinContexts (items (*this, ctx));
+}
+
+compile::LinkContext compile::joinContexts (std::vector<LinkContext> ctxs) {
+	LinkContext newCtx;
+	for (unsigned i = 0; i < ctxs.size(); i++) {
+		push_all (newCtx.libPaths, ctxs[i].libPaths);
+		push_all (newCtx.libNames, ctxs[i].libNames);
+		push_all (newCtx.includePaths, ctxs[i].includePaths);
+		push_all (newCtx.headers, ctxs[i].headers);
+	}
+	return newCtx;
+}
+
 /** Generate unique var name */
 // TODO: make globally unique
 std::string compile::freshName (std::string prefix) {

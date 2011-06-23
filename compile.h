@@ -7,21 +7,34 @@
 #include "library.h"
 #include "type.h"
 #include <cstdio>
+#include "vector.h"
+#include "util.h" // output vector
 
 namespace compile {
+
+inline std::string include (std::string headName) {return "#include <" + headName + ">";}
 
 /** Generate unique name */
 std::string freshName (std::string prefix);
 
 /** Dependent libraries and headers */
 class LinkContext {
+	friend bool operator== (const LinkContext& a, const LinkContext& b) {return a.libPaths == b.libPaths && a.libNames == b.libNames && a.includePaths == b.includePaths && a.headers == b.headers;}
+	friend bool operator< (const LinkContext& a, const LinkContext& b) {return a.libPaths < b.libPaths || (a.libPaths == b.libPaths && (a.libNames < b.libNames || (a.libNames == b.libNames && (a.includePaths < b.includePaths || (a.includePaths == b.includePaths && a.headers < b.headers)))));}
+	friend bool operator!= (const LinkContext& a, const LinkContext& b) {return !(a == b);}
+	friend bool operator> (const LinkContext& a, const LinkContext& b) {return b < a;}
+	friend bool operator>= (const LinkContext& a, const LinkContext& b) {return !(a < b);}
+	friend bool operator<= (const LinkContext& a, const LinkContext& b) {return !(a > b);}
 public:
 	std::vector <std::string> libPaths; // g++ -L option
 	std::vector <library::Libname> libNames; // g++ -l option
 	std::vector <std::string> includePaths; // g++ -I option
 	std::vector <std::string> headers; // lines prepended to source code, usually contains #include directives
+	LinkContext (library::Libname libName, std::string headName) : libNames (items(libName)), headers (items(include(headName))) {}
+	LinkContext (std::vector<library::Libname> libNames, std::vector<std::string> headNames) : libNames(libNames), headers(fmap (include, headNames)) {}
 	LinkContext () {}
-	/** Header lines concatenated together */
+	/** concatenate this with arg */
+	LinkContext operator+ (const LinkContext &ctx) const;
 	std::string header() {
 		std::stringstream ss;
 		for (unsigned i = 0; i < headers.size(); i++) ss << headers[i] << "\n";
@@ -34,6 +47,9 @@ public:
 		headers.clear();
 	}
 };
+
+/** Append all their items together */
+LinkContext joinContexts (std::vector<LinkContext> ctxs);
 
 /** Invoke C++ compiler on given source code in given link context, then dynamically load it */
 library::Library compileLoad (LinkContext ctx, std::string code);
@@ -59,4 +75,9 @@ template <class T> T eval (LinkContext ctx, std::string expr) {
 /** Compile C++ code as a program, return its executable name */
 std::string compileProgram (LinkContext ctx, std::string code);
 
+}
+
+inline std::ostream& operator<< (std::ostream& out, const compile::LinkContext &x) {
+	out << "LinkContext " << x.libPaths << ", " << x.libNames << ", " << x.includePaths << ", " << x.headers;
+	return out;
 }

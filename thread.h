@@ -8,8 +8,11 @@
 #include <boost/thread.hpp>
 #include "mvar.h"
 #include "type.h"
+#include "compile.h"
 
 namespace thread {
+
+const compile::LinkContext module ("10util", "10util/thread.h");
 
 typedef boost::shared_ptr <boost::thread> Thread;
 
@@ -116,5 +119,8 @@ template <template <typename> class A> void parallel (std::vector< A<void> > con
 }
 
 inline void sleep (float secs) {boost::this_thread::sleep (boost::posix_time::milliseconds (secs * 1000));}
+
+inline void interrupt (thread::Thread t) {t->interrupt();}
+inline void join (thread::Thread t) {t->join();}
 
 }
