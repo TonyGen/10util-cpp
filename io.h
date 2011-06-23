@@ -64,14 +64,14 @@ template <class A> A decode (Code x) {
 	std::stringstream ss (x.data);
 	boost::archive::text_iarchive ar (ss);
 	A a;
-	ar >> a;
+	read (ar, a);
 	return a;
 }
 
 template <class A> Code encode (A a) {
 	std::stringstream ss;
 	boost::archive::text_oarchive ar (ss);
-	ar << a;
+	write (ar, a);
 	return Code (ss.str());
 }
 

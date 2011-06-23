@@ -19,19 +19,20 @@ std::string freshName (std::string prefix);
 
 /** Dependent libraries and headers */
 class LinkContext {
-	friend bool operator== (const LinkContext& a, const LinkContext& b) {return a.libPaths == b.libPaths && a.libNames == b.libNames && a.includePaths == b.includePaths && a.headers == b.headers;}
-	friend bool operator< (const LinkContext& a, const LinkContext& b) {return a.libPaths < b.libPaths || (a.libPaths == b.libPaths && (a.libNames < b.libNames || (a.libNames == b.libNames && (a.includePaths < b.includePaths || (a.includePaths == b.includePaths && a.headers < b.headers)))));}
+	friend bool operator== (const LinkContext& a, const LinkContext& b) {return a.libPaths == b.libPaths && a.includePaths == b.includePaths && a.libNames == b.libNames && a.headers == b.headers;}
+	friend bool operator< (const LinkContext& a, const LinkContext& b) {return a.libPaths < b.libPaths || (a.libPaths == b.libPaths && (a.includePaths < b.includePaths || (a.includePaths == b.includePaths && (a.libNames < b.libNames || (a.libNames == b.libNames && a.headers < b.headers)))));}
 	friend bool operator!= (const LinkContext& a, const LinkContext& b) {return !(a == b);}
 	friend bool operator> (const LinkContext& a, const LinkContext& b) {return b < a;}
 	friend bool operator>= (const LinkContext& a, const LinkContext& b) {return !(a < b);}
 	friend bool operator<= (const LinkContext& a, const LinkContext& b) {return !(a > b);}
 public:
 	std::vector <std::string> libPaths; // g++ -L option
-	std::vector <library::Libname> libNames; // g++ -l option
 	std::vector <std::string> includePaths; // g++ -I option
+	std::vector <library::Libname> libNames; // g++ -l option
 	std::vector <std::string> headers; // lines prepended to source code, usually contains #include directives
-	LinkContext (library::Libname libName, std::string headName) : libNames (items(libName)), headers (items(include(headName))) {}
-	LinkContext (std::vector<library::Libname> libNames, std::vector<std::string> headNames) : libNames(libNames), headers(fmap (include, headNames)) {}
+	LinkContext (library::Libname libName, std::string headName) : libNames(items(libName)), headers(items(include(headName))) {}
+	LinkContext (std::vector<library::Libname> libNames, std::vector<std::string> headNames) : libNames(libNames), headers(fmap(include,headNames)) {}
+	LinkContext (std::string libPath, std::string includePath, std::vector<library::Libname> libNames, std::vector<std::string> headNames) : libPaths(items(libPath)), includePaths(items(includePath)), libNames(libNames), headers(fmap(include,headNames)) {}
 	LinkContext () {}
 	/** concatenate this with arg */
 	LinkContext operator+ (const LinkContext &ctx) const;
