@@ -10,6 +10,9 @@
 #include <stdlib.h>
 #include <cerrno>
 #include "type.h"
+#include "module.h"
+
+template <> module::Module type<program::Program>::module = module::Module ("10util", "10util/program.h");
 
 /** Short hand for options list of one pair */
 program::Options program::options (std::string name, std::string value) {

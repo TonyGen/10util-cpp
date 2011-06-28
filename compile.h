@@ -8,7 +8,7 @@
 #include "type.h"
 #include <cstdio>
 #include "vector.h"
-#include "util.h" // output vector
+#include "module.h"
 
 namespace compile {
 
@@ -30,12 +30,8 @@ public:
 	std::vector <std::string> includePaths; // g++ -I option
 	std::vector <library::Libname> libNames; // g++ -l option
 	std::vector <std::string> headers; // lines prepended to source code, usually contains #include directives
-	LinkContext (library::Libname libName, std::string headName) : libNames(items(libName)), headers(items(include(headName))) {}
-	LinkContext (std::vector<library::Libname> libNames, std::vector<std::string> headNames) : libNames(libNames), headers(fmap(include,headNames)) {}
-	LinkContext (std::string libPath, std::string includePath, std::vector<library::Libname> libNames, std::vector<std::string> headNames) : libPaths(items(libPath)), includePaths(items(includePath)), libNames(libNames), headers(fmap(include,headNames)) {}
+	LinkContext (module::Module mod) : libPaths (mod.libPaths), includePaths (mod.includePaths), libNames (mod.libNames), headers (fmap (include, mod.includeFiles)) {}
 	LinkContext () {}
-	/** concatenate this with arg */
-	LinkContext operator+ (const LinkContext &ctx) const;
 	std::string header() {
 		std::stringstream ss;
 		for (unsigned i = 0; i < headers.size(); i++) ss << headers[i] << "\n";
@@ -48,9 +44,6 @@ public:
 		headers.clear();
 	}
 };
-
-/** Append all their items together */
-LinkContext joinContexts (std::vector<LinkContext> ctxs);
 
 /** Invoke C++ compiler on given source code in given link context, then dynamically load it */
 library::Library compileLoad (LinkContext ctx, std::string code);
@@ -82,12 +75,3 @@ inline std::ostream& operator<< (std::ostream& out, const compile::LinkContext &
 	out << "LinkContext " << x.libPaths << ", " << x.libNames << ", " << x.includePaths << ", " << x.headers;
 	return out;
 }
-
-
-/** Module where type is defined. Must specialize for each type */
-template <class T> compile::LinkContext typeModule ();
-template <template <typename> class T> compile::LinkContext typeModule ();
-
-//template <> inline compile::LinkContext typeModule<int> () {return compile::LinkContext("int","int.h");}
-template <> inline compile::LinkContext typeModule<int> () {return compile::LinkContext();}
-template <> inline compile::LinkContext typeModule<void> () {return compile::LinkContext();}

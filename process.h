@@ -8,9 +8,11 @@
 #include <boost/shared_ptr.hpp>
 #include "program.h"
 #include "util.h" // to_string
-#include "compile.h"
+#include "module.h"
 
 namespace process {
+
+const module::Module module ("10util", "10util/process.h");
 
 /** Process running a Program */
 class Process_ {
@@ -50,10 +52,6 @@ void terminate (Process p);
 /** Program process is running */
 inline program::Program program (Process process) {return process->program;}
 
-const compile::LinkContext module ("10util", "10util/process.h");
 }
-
-template <> inline compile::LinkContext typeModule<process::Process_> () {return process::module;}
-template <> inline compile::LinkContext typeModule<program::Program> () {return compile::LinkContext ("10util", "10util/program.h");}
 
 inline std::ostream& operator<< (std::ostream& out, const process::Process_& p) {out << p.shortName(); return out;}

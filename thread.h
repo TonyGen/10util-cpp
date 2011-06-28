@@ -8,14 +8,11 @@
 #include <boost/thread.hpp>
 #include "mvar.h"
 #include "type.h"
-#include "compile.h"
-
-template <> inline compile::LinkContext typeModule<boost::thread> () {
-	return compile::LinkContext ("boost_thread-mt", "boost/thread.hpp");}
+#include "module.h"
 
 namespace thread {
 
-const compile::LinkContext module ("10util", "10util/thread.h");
+const module::Module module ("10util", "10util/thread.h");
 
 typedef boost::shared_ptr <boost::thread> Thread;
 
