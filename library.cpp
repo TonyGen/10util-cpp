@@ -10,7 +10,6 @@ library::Library library::load (Libname libname) {
 }
 
 /** Same as `load` except don't return anything */
-Unit library::load_ (Libname libname) {
+void library::load_ (Libname libname) {
 	load (libname);
-	return unit;
 }

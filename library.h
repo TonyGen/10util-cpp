@@ -4,7 +4,6 @@
 
 #include <stdexcept>
 #include <dlfcn.h>
-#include "unit.h"
 
 namespace library {
 
@@ -31,7 +30,7 @@ template <class F> F sym (Library library, std::string funName) {
 }
 
 /** Same as `load` except don't return anything */
-Unit load_ (Libname libname);
+void load_ (Libname libname);
 
 }
 

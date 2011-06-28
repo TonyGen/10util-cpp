@@ -82,3 +82,12 @@ inline std::ostream& operator<< (std::ostream& out, const compile::LinkContext &
 	out << "LinkContext " << x.libPaths << ", " << x.libNames << ", " << x.includePaths << ", " << x.headers;
 	return out;
 }
+
+
+/** Module where type is defined. Must specialize for each type */
+template <class T> compile::LinkContext typeModule ();
+template <template <typename> class T> compile::LinkContext typeModule ();
+
+//template <> inline compile::LinkContext typeModule<int> () {return compile::LinkContext("int","int.h");}
+template <> inline compile::LinkContext typeModule<int> () {return compile::LinkContext();}
+template <> inline compile::LinkContext typeModule<void> () {return compile::LinkContext();}

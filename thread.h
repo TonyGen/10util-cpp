@@ -10,6 +10,9 @@
 #include "type.h"
 #include "compile.h"
 
+template <> inline compile::LinkContext typeModule<boost::thread> () {
+	return compile::LinkContext ("boost_thread-mt", "boost/thread.hpp");}
+
 namespace thread {
 
 const compile::LinkContext module ("10util", "10util/thread.h");

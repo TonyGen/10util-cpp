@@ -6,6 +6,7 @@
 #include <sstream>
 #include <boost/function.hpp>
 #include <set>
+#include <stdexcept>
 
 //template <class A> std::vector<A> fromSet (std::set<A> set) {
 //	std::vector<A> list;
