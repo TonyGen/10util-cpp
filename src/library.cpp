@@ -3,9 +3,16 @@
 
 /** Load library */
 library::Library library::load (Libname libname) {
+	std::string err;
 	void* lib = dlopen (("lib" + libname + ".so").c_str(), RTLD_LAZY);
-	if (!lib) lib = dlopen (("lib" + libname + ".dylib").c_str(), RTLD_LAZY);
-	if (!lib) throw std::runtime_error ("Cannot open library lib" + libname + ".so(.dylib): " + dlerror());
+	if (!lib) {
+		err += std::string (dlerror());
+		lib = dlopen (("lib" + libname + ".dylib").c_str(), RTLD_LAZY);
+	}
+	if (!lib) {
+		err += "\n" + std::string (dlerror());
+		throw std::runtime_error ("Cannot open library lib" + libname + ".so(.dylib):\n" + err);
+	}
 	return Library (libname, lib);
 }
 
