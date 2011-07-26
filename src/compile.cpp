@@ -33,7 +33,7 @@ library::Library compile::compileLoad (LinkContext ctx, std::string code) {
 	exitStatus = system (cmd1.str().c_str());
 	if (exitStatus != 0) throw std::runtime_error (cmd1.str() + "\n failed with exit status " + to_string (exitStatus));
 
-	library::Library lib = library::load (filename);
+	library::Library lib = library::load (filename, "./");
 	// remove ((filename + ".cpp").c_str());
 	remove ((filename + ".o").c_str());
 	return lib;

@@ -19,8 +19,8 @@ struct Library {
 
 //TODO: library delete file method
 
-/** Load library */
-Library load (Libname libname);
+/** Load library. If relative or absolute dir is supplied then find library there (dir MUST include trailing '/'), otherwise use runtime linker's search path (LD_LIBRARY_PATH) */
+Library load (Libname libname, std::string dir = "");
 
 /** Get address of named function or variable in given loaded library. F should be a function pointer or a pointer to the type of value that the variable holds. */
 template <class F> F sym (Library library, std::string funName) {
@@ -28,9 +28,6 @@ template <class F> F sym (Library library, std::string funName) {
 	if (!ptr) throw std::runtime_error (funName + " not found in lib" + library.name + ".so(.dylib): " + dlerror());
 	return ptr;
 }
-
-/** Same as `load` except don't return anything */
-void load_ (Libname libname);
 
 }
 
