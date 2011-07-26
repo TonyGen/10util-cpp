@@ -1,4 +1,4 @@
-/* Identify a "module" in a library. A module defines a function/class and is composed of the header file that declares the function/class, and the library that defines it or dependent libraries if the function/class is a template. */
+/* Identify a "module" in a library. A module defines a set of functions, classes and templates. It is composed of the header file that declares them, the library that defines the functions and classes, and the dependent libraries needed for the templates. */
 
 #pragma once
 

@@ -27,8 +27,7 @@ static void acceptLoop (boost::shared_ptr<tcp::acceptor> acceptor, boost::functi
 	}
 }
 
-/** Listen for client connections, forking a thread for each one running given server function.
- * Return listener thread that you may terminate to stop listening. */
+/** Fork a thread that listens for client connections on given port. This thread runs given server function on every new connection. server should fork if wants to do a long running process. Kill returned listener thread when done listening. */
 boost::shared_ptr<boost::thread> network::listen (Port port, boost::function1 <void, io::IOStream> server) {
 	boost::shared_ptr<tcp::acceptor> acceptor (new tcp::acceptor (IO, tcp::endpoint (tcp::v4(), port)));
 	return boost::shared_ptr<boost::thread> (new boost::thread (boost::bind (acceptLoop, acceptor, server)));

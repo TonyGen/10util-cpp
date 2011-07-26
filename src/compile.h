@@ -60,8 +60,8 @@ template <class T> T eval (LinkContext ctx, std::string expr) {
 	code << "extern \"C\" " << typeName<T>() << " " << name << " () {return " << expr << ";}\n";
 	library::Library lib = compileLoad (ctx, code.str());
 	Fun fun = (Fun) dlsym (lib.handle, name.c_str());
-	remove (("lib" + lib.name + ".so").c_str());
-	remove (("lib" + lib.name + ".dylib").c_str());
+	// remove (("lib" + lib.name + ".so").c_str());
+	// remove (("lib" + lib.name + ".dylib").c_str());
 	if (!fun) throw std::runtime_error (name + " not found, should not happen: " + dlerror());
 	return fun ();
 }

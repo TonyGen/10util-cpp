@@ -1,15 +1,13 @@
 // stacktrace.h (c) 2008, Timo Bingmann from http://idlebox.net/
 // published under the WTFPL v2.0
 
-#pragma once
-
-#include <stdio.h>
+#include "stacktrace.h"
 #include <stdlib.h>
 #include <execinfo.h>
 #include <cxxabi.h>
 
 /** Print a demangled stack backtrace of the caller function to FILE* out. */
-static inline void print_stacktrace(FILE *out = stderr, unsigned int max_frames = 63)
+void print_stacktrace(FILE *out, unsigned int max_frames)
 {
     fprintf(out, "stack trace:\n");
 

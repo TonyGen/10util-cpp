@@ -4,6 +4,7 @@
 
 #include <boost/units/detail/utility.hpp>
 #include <vector>
+#include <sstream>
 
 typedef std::string TypeName;
 

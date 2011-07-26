@@ -21,20 +21,20 @@ library::Library compile::compileLoad (LinkContext ctx, std::string code) {
 	sourceFile.close();
 
 	std::stringstream cmd;
-	cmd << "g++ -pipe -g -fPIC -c -o " << filename << ".o " << filename << ".cpp";
+	cmd << "g++ -pipe -g -fPIC -DBOOST_BUILD_PCH_ENABLED -fexceptions -O0 -Winvalid-pch -c -o " << filename << ".o " << filename << ".cpp";
 	for (unsigned i = 0; i < ctx.includePaths.size(); i++) cmd << " -I" << ctx.includePaths[i];
 	int exitStatus = system (cmd.str().c_str());
 	if (exitStatus != 0) throw std::runtime_error (cmd.str() + "\n failed with exit status " + to_string (exitStatus));
 
 	std::stringstream cmd1;
-	cmd1 << "g++ -pipe -shared -rdynamic -o lib" << filename << ".so " << filename << ".o";
+	cmd1 << "g++ -pipe -shared -rdynamic -DBOOST_BUILD_PCH_ENABLED -fexceptions -O0 -Winvalid-pch -o lib" << filename << ".so " << filename << ".o";
 	for (unsigned i = 0; i < ctx.libPaths.size(); i++) cmd1 << " -L" << ctx.libPaths[i];
 	for (unsigned i = 0; i < ctx.libNames.size(); i++) cmd1 << " -l" << ctx.libNames[i];
 	exitStatus = system (cmd1.str().c_str());
 	if (exitStatus != 0) throw std::runtime_error (cmd1.str() + "\n failed with exit status " + to_string (exitStatus));
 
 	library::Library lib = library::load (filename);
-	remove ((filename + ".cpp").c_str());
+	// remove ((filename + ".cpp").c_str());
 	remove ((filename + ".o").c_str());
 	return lib;
 }
@@ -46,7 +46,7 @@ std::string compile::compileProgram (LinkContext ctx, std::string code) {
 	sourceFile << ctx.header() << "\n" << code;
 	sourceFile.close();
 
-	std::stringstream cmd; cmd << "g++ -pipe -g -rdynamic -o " << filename << filename << ".cpp";
+	std::stringstream cmd; cmd << "g++ -pipe -g -rdynamic -DBOOST_BUILD_PCH_ENABLED -fexceptions -O0 -Winvalid-pch -o " << filename << filename << ".cpp";
 	for (unsigned i = 0; i < ctx.includePaths.size(); i++) cmd << " -I" << ctx.includePaths[i];
 	for (unsigned i = 0; i < ctx.libPaths.size(); i++) cmd << " -L" << ctx.libPaths[i];
 	for (unsigned i = 0; i < ctx.libNames.size(); i++) cmd << " -l" << ctx.libNames[i];
@@ -64,8 +64,8 @@ void compile::exec (LinkContext ctx, std::string code) {
 	def << "extern \"C\" void " << name << " () {" << code << "}\n";
 	library::Library lib = compileLoad (ctx, def.str());
 	Fun fun = (Fun) dlsym (lib.handle, name.c_str());
-	remove (("lib" + lib.name + ".so").c_str());
-	remove (("lib" + lib.name + ".dylib").c_str());
+	// remove (("lib" + lib.name + ".so").c_str());
+	// remove (("lib" + lib.name + ".dylib").c_str());
 	if (!fun) throw std::runtime_error (name + " not found, should not happen: " + dlerror());
 	fun ();
 }
