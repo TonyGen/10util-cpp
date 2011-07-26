@@ -21,13 +21,13 @@ library::Library compile::compileLoad (LinkContext ctx, std::string code) {
 	sourceFile.close();
 
 	std::stringstream cmd;
-	cmd << "g++ -pipe -g -fPIC -DBOOST_BUILD_PCH_ENABLED -fexceptions -O0 -Winvalid-pch -c -o " << filename << ".o " << filename << ".cpp";
+	cmd << "g++ -pipe -fPIC -DBOOST_BUILD_PCH_ENABLED -DNDEBUG -fexceptions -O0 -Winvalid-pch -c -o " << filename << ".o " << filename << ".cpp";
 	for (unsigned i = 0; i < ctx.includePaths.size(); i++) cmd << " -I" << ctx.includePaths[i];
 	int exitStatus = system (cmd.str().c_str());
 	if (exitStatus != 0) throw std::runtime_error (cmd.str() + "\n failed with exit status " + to_string (exitStatus));
 
 	std::stringstream cmd1;
-	cmd1 << "g++ -pipe -shared -rdynamic -DBOOST_BUILD_PCH_ENABLED -fexceptions -O0 -Winvalid-pch -o lib" << filename << ".so " << filename << ".o";
+	cmd1 << "g++ -pipe -shared -rdynamic -o lib" << filename << ".so " << filename << ".o";
 	for (unsigned i = 0; i < ctx.libPaths.size(); i++) cmd1 << " -L" << ctx.libPaths[i];
 	for (unsigned i = 0; i < ctx.libNames.size(); i++) cmd1 << " -l" << ctx.libNames[i];
 	exitStatus = system (cmd1.str().c_str());
@@ -46,7 +46,7 @@ std::string compile::compileProgram (LinkContext ctx, std::string code) {
 	sourceFile << ctx.header() << "\n" << code;
 	sourceFile.close();
 
-	std::stringstream cmd; cmd << "g++ -pipe -g -rdynamic -DBOOST_BUILD_PCH_ENABLED -fexceptions -O0 -Winvalid-pch -o " << filename << filename << ".cpp";
+	std::stringstream cmd; cmd << "g++ -pipe -rdynamic -DBOOST_BUILD_PCH_ENABLED -DNDEBUG -fexceptions -O0 -Winvalid-pch -o " << filename << filename << ".cpp";
 	for (unsigned i = 0; i < ctx.includePaths.size(); i++) cmd << " -I" << ctx.includePaths[i];
 	for (unsigned i = 0; i < ctx.libPaths.size(); i++) cmd << " -L" << ctx.libPaths[i];
 	for (unsigned i = 0; i < ctx.libNames.size(); i++) cmd << " -l" << ctx.libNames[i];

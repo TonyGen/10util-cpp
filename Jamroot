@@ -1,31 +1,30 @@
-project : source-location src : requirements <include>/opt/local/include ;
+project : source-location src : requirements <include>/opt/local/include <variant>release ;
 
 lib sys : : <name>boost_system-mt <search>/opt/local/lib ;
 lib fs : : <name>boost_filesystem-mt <search>/opt/local/lib ;
 lib th : : <name>boost_thread-mt <search>/opt/local/lib ;
 lib ser : : <name>boost_serialization-mt <search>/opt/local/lib ;
 
-cpp-pch compile : compile.h ;
-cpp-pch either : either.h ;
-cpp-pch except : except.h ;
-cpp-pch file : file.h ;
-cpp-pch io : io.h ;
-cpp-pch library : library.h ;
+cpp-pch compile : compile.h : <optimization>off ;
+cpp-pch either : either.h : <optimization>off ;
+cpp-pch except : except.h : <optimization>off ;
+cpp-pch file : file.h : <optimization>off ;
+cpp-pch io : io.h : <optimization>off ;
+cpp-pch library : library.h : <optimization>off ;
 # cpp-pch map  # failed for some reason
 # cpp-pch module  # module is a bjam keyword
-cpp-pch mvar : mvar.h ;
-cpp-pch network : network.h ;
-cpp-pch process : process.h ;
-cpp-pch program : program.h ;
-cpp-pch stacktrace : stacktrace.h ;
-cpp-pch thread : thread.h ;
-cpp-pch type : type.h ;
-cpp-pch unit : unit.h ;
-cpp-pch util : util.h ;
-cpp-pch vector : vector.h ;
+cpp-pch mvar : mvar.h : <optimization>off ;
+cpp-pch network : network.h : <optimization>off ;
+cpp-pch process : process.h : <optimization>off ;
+cpp-pch program : program.h : <optimization>off ;
+cpp-pch stacktrace : stacktrace.h : <optimization>off ;
+cpp-pch thread : thread.h : <optimization>off ;
+cpp-pch type : type.h : <optimization>off ;
+cpp-pch unit : unit.h : <optimization>off ;
+cpp-pch util : util.h : <optimization>off ;
+cpp-pch vector : vector.h : <optimization>off ;
 
-lib 10util : [ glob *.cpp ] sys fs th ser
-	compile either except file io library mvar network process program stacktrace thread type unit util vector ;
+lib 10util : [ glob *.cpp ] sys fs th ser ;
 
 install ilib : 10util : <location>/usr/local/lib ;
 install ihead : [ glob *.h ]
