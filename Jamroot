@@ -1,0 +1,35 @@
+project : source-location src : requirements <include>/opt/local/include ;
+
+lib sys : : <name>boost_system-mt <search>/opt/local/lib ;
+lib fs : : <name>boost_filesystem-mt <search>/opt/local/lib ;
+lib th : : <name>boost_thread-mt <search>/opt/local/lib ;
+lib ser : : <name>boost_serialization-mt <search>/opt/local/lib ;
+
+cpp-pch compile : compile.h ;
+cpp-pch either : either.h ;
+cpp-pch except : except.h ;
+cpp-pch file : file.h ;
+cpp-pch io : io.h ;
+cpp-pch library : library.h ;
+# cpp-pch map  # failed for some reason
+# cpp-pch module  # module is a bjam keyword
+cpp-pch mvar : mvar.h ;
+cpp-pch network : network.h ;
+cpp-pch process : process.h ;
+cpp-pch program : program.h ;
+cpp-pch stacktrace : stacktrace.h ;
+cpp-pch thread : thread.h ;
+cpp-pch type : type.h ;
+cpp-pch unit : unit.h ;
+cpp-pch util : util.h ;
+cpp-pch vector : vector.h ;
+
+lib 10util : [ glob *.cpp ] sys fs th ser
+	compile either except file io library mvar network process program stacktrace thread type unit util vector ;
+
+install ilib : 10util : <location>/usr/local/lib ;
+install ihead : [ glob *.h ]
+	compile either except file io library mvar network process program stacktrace thread type unit util vector
+	: <location>/usr/local/include/10util ;
+alias install : ilib ihead ;
+explicit install ilib ihead ;
