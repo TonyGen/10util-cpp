@@ -9,7 +9,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <csignal>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/ptrace.h>
 #include "type.h"
 #include "module.h"
