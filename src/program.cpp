@@ -5,10 +5,12 @@
 #include <sstream>
 #include <stdexcept>
 #include <cstring>
+#include <cerrno>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <cerrno>
+#include <sys/types.h>
+#include <sys/ptrace.h>
 #include "type.h"
 #include "module.h"
 
@@ -148,16 +150,19 @@ pid_t program::start (bool clear, program::Program program, program::IO io) {
 	char** args = argv (program);
 	pid_t pid = fork ();
 	if (pid == 0) { // This is the child process, execute the command
-		try {
-			redirectStdInOutErr (io);
-			execvp (program.executable.c_str(), args);
-		} catch (std::exception &e) {
-			pid_t pid = getpid();
-			std::cerr << "child " << pid << " failed: (" << typeName(e) << ") " << e.what() << std::endl;
-		}
-		_exit (EXIT_FAILURE);  // execvp only returns on error
+		ptrace (PT_TRACE_ME, 0, 0, 0); // cause SIGTRAP to be sent to parent on successful execvp below
+		redirectStdInOutErr (io);
+		execvp (program.executable.c_str(), args);
+		_exit (errno);  // execvp only returns on error
 	} else if (pid < 0)
 		throw std::runtime_error ("Failed to launch: " + program.executable + program::optionsString (program.options));
-	else // This is the parent process
+	else { // This is the parent process
+		int s;
+		waitpid (pid, &s, 0); // wait for SIGTRAP (successful execvp) or exit (unsuccessful execvp)
+		if (WIFEXITED(s))
+			throw std::runtime_error ("Failed to launch (" + to_string(WEXITSTATUS(s)) + "): " + program.executable + program::optionsString (program.options));
+		assert (WIFSTOPPED(s) && WSTOPSIG(s) == SIGTRAP);
+		ptrace (PT_DETACH, pid, 0, 0);
 		return pid;
+	}
 }

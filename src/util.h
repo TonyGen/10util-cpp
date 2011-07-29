@@ -5,6 +5,7 @@
 #include <boost/function.hpp>
 #include <sstream>
 #include <ostream>
+#include <utility> // pair
 #include <vector>
 #include <map>
 #include <stdexcept>
@@ -16,6 +17,10 @@ inline std::vector <std::string> argsVector (int argc, char* argv[]) {
 		args.push_back (argv[i]);
 	}
 	return args;
+}
+
+template <class K, class V> std::ostream& operator<< (std::ostream& out, const std::pair<K,V>& pair) {
+	out << "(" << pair.first << ", " << pair.second << ")";
 }
 
 template <class T> std::ostream& operator<< (std::ostream& out, const std::vector<T>& list) {
