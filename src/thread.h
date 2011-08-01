@@ -118,7 +118,7 @@ template <template <typename> class A> void parallel (std::vector< A<void> > con
 	}
 }
 
-inline void sleep (float secs) {boost::this_thread::sleep (boost::posix_time::milliseconds (secs * 1000));}
+inline void sleep (double secs) {boost::this_thread::sleep (boost::posix_time::milliseconds (secs * 1000));}
 
 inline void interrupt (thread::Thread t) {t->interrupt();}
 inline void join (thread::Thread t) {t->join();}
