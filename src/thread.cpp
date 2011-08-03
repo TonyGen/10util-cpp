@@ -8,3 +8,7 @@ void thread::defaultThreadErrorHandler (std::exception &e) {
 }
 
 boost::function <void (std::exception&)> thread::threadErrorHandler = &thread::defaultThreadErrorHandler;
+
+var::MVar_<_thread::ThreadMap> _thread::vThreadMap ((ThreadMap()));
+
+volatile unsigned _thread::nextThreadNum = 0;

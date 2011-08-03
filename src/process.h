@@ -43,5 +43,16 @@ std::vector<Process> allProcesses ();
 
 }
 
+/* Printing & Serialization */
+
 inline std::ostream& operator<< (std::ostream& out, const process::Process& p) {
 	out << p.pid << " " << p.program; return out;}
+
+namespace boost {namespace serialization {
+
+template <class Archive> void serialize (Archive & ar, process::Process & x, const unsigned version) {
+	ar & x.program;
+	ar & x.pid;
+}
+
+}}
