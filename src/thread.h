@@ -73,7 +73,7 @@ extern volatile unsigned nextThreadNum;
 
 /** register this thread, run action, and unregister when finished. Report error on error.
  * A type: void A(), string A.toString() for thread description */
-template <template <typename> class A> void runAction (A<void> action, var::MVar_<int>* syn) {
+template <template <typename> class A> void runAction (A<void> action, MVAR(int) syn) {
 	syn->take(); // wait for this thread to be added to threadMap before running (and removing it)
 	try {
 		action();
@@ -94,13 +94,13 @@ namespace thread {
 
 /** Start new thread executing action */
 template <template <typename> class A> Thread fork (A<void> action, std::string description) {
-	var::MVar_<int> syn;
-	boost::shared_ptr<boost::thread> p (new boost::thread (boost::bind (_thread::runAction<A>, action, &syn)));
+	MVAR(int) syn = var::newMVar<int>();
+	boost::shared_ptr<boost::thread> p (new boost::thread (boost::bind (_thread::runAction<A>, action, syn)));
 	var::Access<_thread::ThreadMap> threadMap (_thread::vThreadMap);
 	unsigned num = ++ _thread::nextThreadNum;
 	Thread t (num, description);
 	threadMap->addThread (t, p);
-	syn.put(0); // thread can now run after we added it to threadMap
+	syn->put(0); // thread can now run after we added it to threadMap
 	return t;
 }
 

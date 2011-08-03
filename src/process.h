@@ -16,6 +16,7 @@ struct Process {
 	program::Program program;
 	pid_t pid;
 	Process (program::Program program, pid_t pid) : program(program), pid(pid) {}
+	Process () {} // for serialization
 };
 
 /** Log filename is derived (using md5) from program name its options, so each program will have a different but reproducible log filename. Pid is not included because we don't want the log filename to change when the process is restarted. */
