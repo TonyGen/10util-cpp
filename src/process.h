@@ -4,8 +4,6 @@
 
 #include <signal.h>
 #include <iostream>
-#include <boost/algorithm/string.hpp>
-#include <boost/shared_ptr.hpp>
 #include "program.h"
 #include "util.h" // to_string
 #include "module.h"
@@ -14,32 +12,23 @@ namespace process {
 
 const module::Module module ("10util", "10util/process.h");
 
-/** Process running a Program */
-class Process_ {
-public:
+struct Process {
 	program::Program program;
-	unsigned id; // our id, not OS id
-	pid_t pid; // OS id
-	Process_ (program::Program program, unsigned id) : program(program), id(id) {}
-	Process_ () {}  // for serialization
-	std::string shortName () const {
-		std::vector<std::string> parts;
-		boost::split (parts, program.executable, boost::is_any_of ("/"));
-		return *--parts.end() + "-" + to_string (id);
-	}
-	std::string outFilename () const {return shortName() + ".out";}
+	pid_t pid;
+	Process (program::Program program, pid_t pid) : program(program), pid(pid) {}
 };
 
-typedef boost::shared_ptr<Process_> Process;
+/** Log filename is derived (using md5) from program name its options, so each program will have a different but reproducible log filename. Pid is not included because we don't want the log filename to change when the process is restarted. */
+std::string logFilename (program::Program);
 
 /** Launch program with its stdout redirected to a local file named executable-id */
-Process launch (program::Program program);
+Process launch (program::Program);
 
 /** Restart program (does not run prepCommand first) */
-void restart (Process deadProcess);
+Process restart (program::Program);
 
 /** Wait for process to terminate returning its exit code */
-int waitFor (Process process);
+int waitFor (Process);
 
 typedef int Signal;
 
@@ -47,11 +36,12 @@ typedef int Signal;
 void signal (Signal, Process);
 
 /** Kill process. No-op if already dead */
-void terminate (Process p);
+void terminate (Process);
 
-/** Program process is running */
-inline program::Program program (Process process) {return process->program;}
+/** Return all processes running on local machine. They will be missing their program prepCommand. */
+std::vector<Process> allProcesses ();
 
 }
 
-inline std::ostream& operator<< (std::ostream& out, const process::Process_& p) {out << p.shortName(); return out;}
+inline std::ostream& operator<< (std::ostream& out, const process::Process& p) {
+	out << p.pid << " " << p.program; return out;}

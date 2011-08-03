@@ -11,6 +11,12 @@
 #include <stdexcept>
 #include "type.h"
 
+/** Convert bytes to its hexidecimal string form */
+std::string hexString (unsigned char* bytes, unsigned bytesLen);
+
+/** Return md5 hash of string as hex string */
+std::string md5 (std::string);
+
 inline std::vector <std::string> argsVector (int argc, char* argv[]) {
 	std::vector <std::string> args;
 	for (int i = 0; i < argc; i++) {

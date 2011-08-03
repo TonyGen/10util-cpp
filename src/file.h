@@ -4,6 +4,8 @@
 
 #include <string>
 #include <fcntl.h>
+#include <cstdio>
+#include <boost/optional.hpp>
 
 typedef int FD; // File descriptor
 typedef FD FDW; // Write-only file descriptor
@@ -24,3 +26,11 @@ void closeFd (FD fd);
 
 /** Throw exception on error */
 void dupFd (FD from, FD to);
+
+/** Convert FD to FILE*. mode must be same that FD was open it ("r" or "w") */
+// FILE* fdopen (FD fd, const char *mode);
+
+// fclose (FILE*)
+
+/** Return next line or NULL if EOF */
+boost::optional<std::string> fGetLine (FILE* file);
