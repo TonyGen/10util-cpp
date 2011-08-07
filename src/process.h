@@ -12,7 +12,14 @@ namespace process {
 
 const module::Module module ("10util", "10util/process.h");
 
-struct Process {
+class Process {
+	friend bool operator== (const Process& a, const Process& b) {return a.program == b.program && a.pid == b.pid;}
+	friend bool operator< (const Process& a, const Process& b) {return a.program < b.program || (a.program == b.program && a.pid < b.pid);}
+	friend bool operator!= (const Process& a, const Process& b) {return !(a == b);}
+	friend bool operator> (const Process& a, const Process& b) {return b < a;}
+	friend bool operator>= (const Process& a, const Process& b) {return !(a < b);}
+	friend bool operator<= (const Process& a, const Process& b) {return !(a > b);}
+public:
 	program::Program program;
 	pid_t pid;
 	Process (program::Program program, pid_t pid) : program(program), pid(pid) {}

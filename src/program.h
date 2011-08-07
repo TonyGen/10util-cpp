@@ -36,7 +36,14 @@ namespace program {
 	Options parseArgs (std::vector<std::string> args);
 
 	/** Program with options, ready to run */
-	struct Program {
+	class Program {
+		friend bool operator== (const Program& a, const Program& b) {return a.prepCommand == b.prepCommand && a.executable == b.executable && a.options == b.options;}
+		friend bool operator< (const Program& a, const Program& b) {return a.prepCommand < b.prepCommand || (a.prepCommand == b.prepCommand && (a.executable < b.executable || (a.executable == b.executable && a.options < b.options)));}
+		friend bool operator!= (const Program& a, const Program& b) {return !(a == b);}
+		friend bool operator> (const Program& a, const Program& b) {return b < a;}
+		friend bool operator>= (const Program& a, const Program& b) {return !(a < b);}
+		friend bool operator<= (const Program& a, const Program& b) {return !(a > b);}
+	public:
 		std::string prepCommand;  // Executed before running program (must finish) upon fresh/clear start
 		std::string executable;  // Program name, PATH is searched
 		Options options;  // Command-line arguments supplied to executable
