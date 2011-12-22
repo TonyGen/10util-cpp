@@ -1,4 +1,4 @@
-Install dependent library first:
+Install dependent library first in `/usr/local`:
 
 - boost-dev
 - boost-system-dev
@@ -16,6 +16,6 @@ Build library `lib10util.so`
 
 	scons
 
-Install library in `/usr/local/lib` and header files in `/usr/local/include/util`
+Install library in `/usr/local/lib` and header files in `/usr/local/include/10util`
 
 	sudo scons install

@@ -1,4 +1,4 @@
-// Compile as: g++ mvar.cpp -g -o mvar -I/opt/local/include -L/opt/local/lib -lboost_system-mt -lboost_thread-mt -lboost_serialization-mt -l10util
+// Compile as: g++ mvar.cpp -g -o mvar -I/usr/local/include -L/usr/local/lib -lboost_system-mt -lboost_thread-mt -lboost_serialization-mt -l10util
 
 #include <iostream>
 #include <boost/thread.hpp>

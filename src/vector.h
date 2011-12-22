@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include <boost/function.hpp>
+#include <boost/optional.hpp>
 #include <set>
 #include <stdexcept>
 
@@ -59,6 +60,21 @@ template <class A> std::vector<A> filter (bool (*pred) (A), std::vector<A> list)
 	return filter (f, list);
 }
 
+template <class A, class F> boost::optional<A> find (F pred, std::vector<A> list) {  // F :: A -> bool
+	for (unsigned i = 0; i < list.size(); i++)
+		if (pred (list[i])) return list[i];
+	return boost::none;
+}
+
+/** Return item with max f, none if list is empty */
+template <class A, class B> boost::optional<A> maxOf (boost::function1<B,A> f, std::vector<A> list) {
+	if (list.size() == 0) return boost::none;
+	A a = list[0];
+	for (unsigned i = 1; i < list.size(); i++)
+		if (f(list[i]) > f(a)) a = list[i];
+	return a;
+}
+
 template <class A> std::vector<A> take (unsigned n, std::vector<A> items) {
 	std::vector<A> list;
 	unsigned m = n < items.size() ? n : items.size();
@@ -72,6 +88,11 @@ template <class A> std::vector<A> drop (unsigned n, std::vector<A> items) {
 	for (unsigned i = n; i < items.size(); i++)
 		list.push_back (items[i]);
 	return list;
+}
+
+/** Head of list or none if empty */
+template <class A> boost::optional<A> mHead (std::vector<A> items) {
+	return items.size() == 0 ? boost::none : items[0];
 }
 
 /** Recycle items until N listed */

@@ -3,8 +3,17 @@
 #include <boost/asio.hpp>
 #include <map>
 #include <utility> // pair
+#include <boost/algorithm/string.hpp>
 
-using boost::asio::ip::tcp;
+using namespace boost::asio::ip;
+using namespace std;
+
+network::HostPort::HostPort (string hostPort) {
+	vector<string> parts;
+	boost::split (parts, hostPort, boost::is_any_of (":"));
+	hostname = parts[0];
+	port = parse_string<Port> (parts[1]);
+}
 
 /** Must be set at startup, if you want to interact on public network */
 static network::Hostname MyHostname = "localhost";

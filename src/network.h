@@ -31,6 +31,7 @@ public:
 	Hostname hostname;
 	Port port;
 	HostPort (Hostname hostname, Port port) : hostname(hostname), port(port) {}
+	HostPort (std::string hostPort);  // parse "host:port"
 };
 
 /** Fork a thread that listens for client connections on given port. This thread runs given server function on every new connection. server should fork if wants to do a long running process. Kill returned listener thread when done listening. */

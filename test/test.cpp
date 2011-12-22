@@ -1,4 +1,4 @@
-// Compile as: g++ -I/opt/local/include test.cpp -o test -l10util
+// Compile as: g++ -I/usr/local/include test.cpp -o test -l10util
 
 #include "../util.h"
 //#include <10util/util.h>

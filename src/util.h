@@ -51,11 +51,12 @@ template <class K, class V> std::ostream& operator<< (std::ostream& out, const s
 	return out;
 }
 
-template <class T> std::string to_string (const T& t) {
+template <class T> std::string toString (const T& t) {
 	std::stringstream ss;
 	ss << t;
 	return ss.str();
 }
+template <class T> std::string to_string (const T& t) {return toString(t);}
 
 template <class T> T parse_string (std::string str) {
 	std::istringstream ss (str);

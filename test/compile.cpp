@@ -1,4 +1,4 @@
-// Compile as: g++ -I/opt/local/include compile.cpp -o compile -l10util
+// Compile as: g++ -I/usr/local/include compile.cpp -o compile -l10util
 
 #include <iostream>
 #include <10util/compile.h>
